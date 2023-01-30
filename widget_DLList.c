@@ -1,4 +1,4 @@
-#include "widget.h"
+#include "widget_DLList.h"
 
 //设置控件的属性
 //id:控件id

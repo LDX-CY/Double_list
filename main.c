@@ -1,5 +1,6 @@
 #include "Double_list.h"
 #include "include_user.h"
+#include "widget_DLList.h"
 
 #if (win64 == 1)
 
@@ -32,7 +33,7 @@ int main()
 	//Node** test;//双重指针数组存储Node的地址
 	Node* array[MIN_SHOWTOP_LENGTH];// = { &Item2 ,&Item3 ,&Item4 };
 
-	Item2.id = 1;
+	/*Item2.id = 1;
 	Item2.gui = gui1;
 	Item2.gui_status = false;
 
@@ -40,14 +41,18 @@ int main()
 	Item3.gui = gui2;
 
 	Item4.id = 3;
-	Item4.gui = gui3;
+	Item4.gui = gui3;*/
 	
+	setDLListControlAttribute(&Item2, 1, 0, false);
+	setDLListControlEvent(&Item2, NULL, gui1);
+
 	//注册上端控件
-	linkedLogin(array, 1,&Item3);
+	linkedLogin(array, 1,&Item2);
 	
 
 	linkedListInit(&linked, &Item);
-	linkedAddList(&linked, &Item2);
+
+	linkedAddList(&linked, array[1]);
 	linkedAddList(&linked, &Item3);
 	linkedAddList(&linked, &Item4);
 	linkedGui(linked);

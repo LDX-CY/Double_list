@@ -1,6 +1,7 @@
 #pragma once
 #ifndef STATUS_USER_H
 #define STATUS_USER_H
+#pragma warning(disable:4005)
 
 #define NULL 0
 #define OK 1
