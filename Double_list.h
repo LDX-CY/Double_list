@@ -7,8 +7,8 @@
 typedef struct Double_item
 {
 	int16_t id;//id:内容的映射
-	struct Node* prev;//上一个节点
-	struct Node* next;//下一个节点
+	struct Double_item* prev;//上一个节点
+	struct Double_item* next;//下一个节点
 	void (*action)(void *paramter);//动作
 	int8_t unit_flag;//单位，暂时未确定有多少个单位切换
 	void (*gui)(void* paramter);//gui
@@ -20,23 +20,19 @@ typedef struct
 {
 	Node* head;
 	Node* tail;
+	int16_t num;
 	//始终指向上端显示链表的头节点和尾节点
 }List_node;
 
-//一个简易版的node
-typedef struct
-{
-	int16_t id;//id:内容的映射
-	struct Node* prev;//上一个节点
-	struct Node* next;//下一个节点
-}Mini_node;
 
 Node Showtop[MIN_SHOWTOP_LENGTH];
 
 
 
-int8_t linkedListInit(Node* Item, List_node* linked);
+int8_t linkedListInit(List_node* linked, Node* Item);
 int8_t linkedAddList(List_node* linked, Node* Item);
+int8_t linkedDeleteList(List_node* linked, int16_t id);
+int8_t linkedGui(List_node linked);
 
 #endif // !DOUBLE_LIST_H
 
