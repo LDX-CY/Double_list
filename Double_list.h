@@ -25,6 +25,8 @@ typedef struct
 	//始终指向上端显示链表的头节点和尾节点
 }List_node;
 
+
+
 //存储数组
 //Node *Showtop[MIN_SHOWTOP_LENGTH];
 
@@ -35,14 +37,8 @@ int8_t linkedAddList(List_node* linked, Node* Item);
 int8_t linkedDeleteList(List_node* linked, int16_t id);
 
 
-//控件注册
-int8_t linkedLogin(Node** array, int8_t i, Node *Item);
 
 
-
-#if (win64==1)
-int8_t linkedGui(List_node linked);
-#endif // (win64==1)
 
 
 

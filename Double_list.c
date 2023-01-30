@@ -84,29 +84,3 @@ int8_t linkedDeleteList(List_node* linked, int16_t id)
 	
 	return OK;
 }
-#if (win64 == 1)
-//打印gui
-int8_t linkedGui(List_node linked)
-{
-	Node* Item;
-	int16_t length;
-	if (linked.tail->id == linked.head->id)
-		return DLLIST_ERROR;
-	Item = linked.head;
-	for (length = 0;length < linked.num;length++)
-	{
-		Item = Item->next;
-		Item->gui(&(Item->gui_status));
-	}
-	return OK;
-}
-#endif // (win64 == 1)
-
-//为控件进行注册
-int8_t linkedLogin(Node **array, int8_t i,Node *Item)
-{
-	if (!array)
-		return DLLIST_ERROR;
-	array[i] = Item;
-	return OK;
-}

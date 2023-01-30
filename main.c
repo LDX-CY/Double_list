@@ -1,6 +1,14 @@
+/*
+将Node结构视为控件，但创建控件并不能自动添加到窗口显示
+，必须要在控件池（Node* array[]）中注册
+，上端和中端需要分别在各自的控件池中注册
+*/
+
 #include "Double_list.h"
 #include "include_user.h"
 #include "widget_DLList.h"
+
+extern App_tank mainTank;
 
 #if (win64 == 1)
 
@@ -30,29 +38,31 @@ int main()
 #if (win64 == 1)
 	Node Item, Item2, Item3, Item4;
 	List_node linked;
-	//Node** test;//双重指针数组存储Node的地址
-	Node* array[MIN_SHOWTOP_LENGTH];// = { &Item2 ,&Item3 ,&Item4 };
+	Node* array[3];//
 
-	/*Item2.id = 1;
-	Item2.gui = gui1;
-	Item2.gui_status = false;
-
-	Item3.id = 2;
-	Item3.gui = gui2;
-
-	Item4.id = 3;
-	Item4.gui = gui3;*/
+	//注册上端控件并添加到应用池
+	mainTank.basicTank = widgetInitialTank(array, 3, &Item2, &Item3, &Item4);
+	mainTank.basicLen = 3;
 	
+	//属性和动作设置
 	setDLListControlAttribute(&Item2, 1, 0, false);
 	setDLListControlEvent(&Item2, NULL, gui1);
 
-	//注册上端控件
-	linkedLogin(array, 1,&Item2);
+	setDLListControlAttribute(&Item3, 2, 0, false);
+	setDLListControlEvent(&Item3, NULL, gui2);
+
+	setDLListControlAttribute(&Item4, 3, 0, false);
+	setDLListControlEvent(&Item4, NULL, gui3);
+
+
+	printBasicControlGui(mainTank);
 	
 
+
+	//控件选择器初始化
 	linkedListInit(&linked, &Item);
 
-	linkedAddList(&linked, array[1]);
+	linkedAddList(&linked, array[0]);
 	linkedAddList(&linked, &Item3);
 	linkedAddList(&linked, &Item4);
 	linkedGui(linked);
