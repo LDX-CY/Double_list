@@ -3,6 +3,7 @@
 //只在链尾做运算
 
 // 4.查找链表
+//id：要查找的id
 Node* linkedChackList(List_node* linked, int16_t id)
 {
 	int16_t length;
@@ -30,6 +31,7 @@ Node* linkedChackList(List_node* linked, int16_t id)
 }
 
 // 3.初始化链表和头节点
+//Item：头节点
 int8_t linkedListInit(List_node* linked , Node* Item)
 {
 	if(!Item||!linked)
@@ -49,6 +51,7 @@ int8_t linkedListInit(List_node* linked , Node* Item)
 	return OK;
 }
 // 1.添加节点
+//Item：要添加的节点
 int8_t linkedAddList(List_node* linked, Node* Item)
 {
 	if (!Item || !linked)
@@ -62,6 +65,7 @@ int8_t linkedAddList(List_node* linked, Node* Item)
 	return OK;
 }
 // 2.删除节点
+//id：要删除的id
 int8_t linkedDeleteList(List_node* linked, int16_t id)
 {
 	Node *Item=0;
@@ -80,7 +84,7 @@ int8_t linkedDeleteList(List_node* linked, int16_t id)
 	
 	return OK;
 }
-
+#if (win64 == 1)
 //打印gui
 int8_t linkedGui(List_node linked)
 {
@@ -94,5 +98,15 @@ int8_t linkedGui(List_node linked)
 		Item = Item->next;
 		Item->gui(&(Item->gui_status));
 	}
+	return OK;
+}
+#endif // (win64 == 1)
+
+//为控件进行注册
+int8_t linkedLogin(Node **array, int8_t i,Node *Item)
+{
+	if (!array)
+		return DLLIST_ERROR;
+	array[i] = Item;
 	return OK;
 }

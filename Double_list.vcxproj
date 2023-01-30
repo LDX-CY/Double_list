@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="Double_list.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="widget.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Double_list.h" />
@@ -148,6 +149,7 @@
     <ClInclude Include="status_user.h" />
     <ClInclude Include="sys_config.h" />
     <ClInclude Include="type_user.h" />
+    <ClInclude Include="widget.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

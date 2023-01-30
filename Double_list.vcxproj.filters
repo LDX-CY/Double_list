@@ -21,6 +21,9 @@
     <ClCompile Include="Double_list.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="widget.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Double_list.h">
@@ -36,6 +39,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include_user.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="widget.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

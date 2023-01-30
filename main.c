@@ -29,6 +29,8 @@ int main()
 #if (win64 == 1)
 	Node Item, Item2, Item3, Item4;
 	List_node linked;
+	//Node** test;//双重指针数组存储Node的地址
+	Node* array[MIN_SHOWTOP_LENGTH];// = { &Item2 ,&Item3 ,&Item4 };
 
 	Item2.id = 1;
 	Item2.gui = gui1;
@@ -39,6 +41,9 @@ int main()
 
 	Item4.id = 3;
 	Item4.gui = gui3;
+	
+	//注册上端控件
+	linkedLogin(array, 1,&Item3);
 	
 
 	linkedListInit(&linked, &Item);

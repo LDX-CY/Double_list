@@ -1,3 +1,4 @@
+#pragma once
 #ifndef TYPE_USER_H
 #define TYPE_USER_H
 

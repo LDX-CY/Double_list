@@ -13,5 +13,7 @@
 #define DLLIST_ID_NULL_ERROR			112     //Double Linked List Node.id is null
 #define DLLIST_DELETE_ERROR				113		//Double Linked List delete error
 
+#define WIDGET_ERROR					114     //Widget error
+
 #endif // !STATUS_USER_H
 
