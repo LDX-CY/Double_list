@@ -45,6 +45,7 @@ int8_t linkedListInit(List_node* linked , NodeMini* Item)
 	linked->head = (Node*)Item;
 	linked->tail = (Node*)Item;
 	linked->num = 0;//初始默认节点数为0（则不包含头节点）
+	linked->visit = linked->head;//访问节点指向头节点
 	return OK;
 }
 // 1.添加节点
@@ -80,4 +81,14 @@ int8_t linkedDeleteList(List_node* linked, int16_t id)
 	
 	
 	return OK;
+}
+
+//清除链表
+void linkedClearList(List_node* linked)
+{
+	linked->tail = linked->head;
+	linked->head->next = linked->head;
+	linked->head->prev = linked->head;
+	linked->num = 0;
+	linked->visit = linked->head;
 }

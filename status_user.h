@@ -16,5 +16,7 @@
 
 #define WIDGET_ERROR					114     //Widget error
 
+#define MENU_ERROR						115     //menu error
+
 #endif // !STATUS_USER_H
 

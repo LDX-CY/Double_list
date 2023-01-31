@@ -3,6 +3,7 @@
 #define DOUBLE_LIST_H
 
 #include "include_user.h"
+typedef struct MenuPoint MenuItem;
 
 //这只是一个数据约定，是存入上端节点数组中的结构
 typedef struct Double_item
@@ -16,16 +17,9 @@ typedef struct Double_item
 	bool gui_status;//选择状态，布尔值false/true
 	bool gui_option;//选项框，与gui_option_status组合使用，布尔值false/true
 	bool gui_option_status;//选项框确定与否的状态，布尔值false/true
+	void* subordinate;//节点的从属
 }Node;
 
-//上端链表
-typedef struct
-{
-	Node* head;
-	Node* tail;
-	int16_t num;
-	//始终指向上端显示链表的头节点和尾节点
-}List_node;
 
 //mini是头节点，零时访问指针也可以用mini，可以减少存储量
 typedef struct
@@ -34,6 +28,27 @@ typedef struct
 	Node* prev;
 	Node* next;
 }NodeMini;
+
+//控件链表
+typedef struct
+{
+	Node* head;
+	Node* tail;
+	int16_t num;
+	//始终指向上端显示链表的头节点和尾节点
+	Node* visit;//节点访问指针,只在菜单的访问中使用该指针
+}List_node;
+
+struct MenuPoint
+{
+	List_node* linked_pointer;//链表指针
+	bool menu_type;//菜单类型
+	int8_t menu_grade;//当前菜单等级
+	void** controlTank;//控件池
+	struct MenuPoint* prev_MenuPoint;
+	struct MenuPoint** next_MenuArray;
+	void (*menuPointAction)(void* paramter);//动作
+};
 
 int8_t linkedListInit(List_node* linked, NodeMini* Item);
 int8_t linkedAddList(List_node* linked, Node* Item);
