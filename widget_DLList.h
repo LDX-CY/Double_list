@@ -22,8 +22,10 @@ Node** widgetInitialTank(Node** array,int8_t length, ...);
 int8_t linkedLogin(Node** array, int8_t i, Node* Item);
 
 int8_t linkedGui(List_node linked);
+//所有的控件都调用同一个gui函数
+void gui(void* paramter);
 
-int8_t setDLListControlAttribute(Node* Item, int16_t id, int8_t unit_flag, bool gui_status);
+int8_t setDLListControlAttribute(Node* Item, int16_t id, int8_t unit_flag, bool gui_status, bool gui_option, bool gui_option_status);
 int8_t setDLListControlEvent( Node* Item, void (*action)(void* paramter), void (*gui)(void* paramter));
 void printBasicControlGui(App_tank tank);
 void printDataControlGui(App_tank tank);

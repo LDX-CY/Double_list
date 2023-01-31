@@ -141,12 +141,14 @@
   <ItemGroup>
     <ClCompile Include="Double_list.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="str_user.c" />
     <ClCompile Include="widget_DLList.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Double_list.h" />
     <ClInclude Include="include_user.h" />
     <ClInclude Include="status_user.h" />
+    <ClInclude Include="str_user.h" />
     <ClInclude Include="sys_config.h" />
     <ClInclude Include="type_user.h" />
     <ClInclude Include="widget_DLList.h" />

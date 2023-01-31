@@ -7,15 +7,13 @@
 #include "status_user.h"
 #include "sys_config.h"
 #include "type_user.h"
-//#include "widget_DLList.h"
-//#include "Double_list.h"
 
 
 
 #if(win64==1)
 
 #include <stdio.h>
-#include <malloc.h>
+//#include <malloc.h>
 
 #else
 

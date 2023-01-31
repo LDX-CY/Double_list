@@ -32,21 +32,18 @@ Node* linkedChackList(List_node* linked, int16_t id)
 
 // 3.初始化链表和头节点
 //Item：头节点
-int8_t linkedListInit(List_node* linked , Node* Item)
+//控件选择器初始化
+int8_t linkedListInit(List_node* linked , NodeMini* Item)
 {
 	if(!Item||!linked)
 		return DLLIST_INIT_ERROR;
-	Item->action = NULL;
-	Item->gui = NULL;
-	Item->gui_status = false;
 	Item->id = 0;
 	//指向头节点本身
-	Item->next = Item;
-	Item->prev = Item;
-	Item->unit_flag = NULL;
+	Item->next = (Node*)Item;
+	Item->prev = (Node*)Item;
 	//将头节点加入链表
-	linked->head = Item;
-	linked->tail = Item;
+	linked->head = (Node*)Item;
+	linked->tail = (Node*)Item;
 	linked->num = 0;//初始默认节点数为0（则不包含头节点）
 	return OK;
 }

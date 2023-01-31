@@ -1,4 +1,5 @@
 #include "widget_DLList.h"
+#include "str_user.h"
 
 App_tank mainTank;
 
@@ -7,13 +8,15 @@ App_tank mainTank;
 //id:控件id
 //unit_flag:单位类型
 //gui_status:选择状态
-int8_t setDLListControlAttribute(Node* Item, int16_t id, int8_t unit_flag, bool gui_status)
+int8_t setDLListControlAttribute(Node* Item, int16_t id, int8_t unit_flag, bool gui_status,bool gui_option,bool gui_option_status)
 {
 	if (!Item)
 		return WIDGET_ERROR;
 	Item->id = id;
 	Item->unit_flag = unit_flag;
 	Item->gui_status = gui_status;
+	Item->gui_option = gui_option;
+	Item->gui_option_status = gui_option_status;
 	return OK;
 }
 
@@ -32,7 +35,7 @@ void printBasicControlGui(App_tank tank)
 	int8_t length;
 	for (length = 0;length < tank.basicLen;length++)
 	{
-		tank.basicTank[length]->gui(&(tank.basicTank[length]->gui_status));
+		tank.basicTank[length]->gui(tank.basicTank[length]);
 	}
 }
 
@@ -41,7 +44,7 @@ void printDataControlGui(App_tank tank)
 	int8_t length;
 	for (length = 0; length < tank.dataLen; length++)
 	{
-		tank.dataTank[length]->gui(&(tank.basicTank[length]->gui_status));
+		tank.dataTank[length]->gui(tank.basicTank[length]);
 	}
 }
 
@@ -66,7 +69,7 @@ int8_t linkedGui(List_node linked)
 	{
 		Item = Item->next;
 #if (win64 == 1)
-		Item->gui(&(Item->gui_status));
+		Item->gui(Item);
 #endif // (win64 == 1)
 	}
 	return OK;
@@ -126,4 +129,23 @@ void clearDataControlTank()
 {
 	mainTank.dataLen = 0;
 	mainTank.dataTank = NULL;
+}
+
+
+void gui(void* paramter)
+{
+	//对option的支持
+	if (((Node*)paramter)->gui_option)
+	{
+		if (((Node*)paramter)->gui_option_status)
+			print(UART_Send, "[#]");
+		else
+			print(UART_Send, "[]");
+	}
+	if (((Node*)paramter)->gui_status != true)
+		print(UART_Send, "[%d]", ((Node*)paramter)->id);
+	else
+	{
+		print(UART_Send, ">%d<", ((Node*)paramter)->id);
+	}
 }

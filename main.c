@@ -7,52 +7,34 @@
 #include "Double_list.h"
 #include "include_user.h"
 #include "widget_DLList.h"
+#include "str_user.h"
 
 extern App_tank mainTank;
 
-#if (win64 == 1)
-
-void gui1(void* paramter)
-{
-	if(*((bool*)paramter) == true)
-		printf("[1]");
-	else
-	{
-		printf(">1<");
-	}
-}
-void gui2(void* paramter)
-{
-	printf("[2]");
-}
-void gui3(void* paramter)
-{
-	printf("[3]");
-}
-#endif // (win64 == 1)
 
 
 int main()
 {
 	
 #if (win64 == 1)
-	Node Item, Item2, Item3, Item4;
+	Node  Item2, Item3, Item4;
+	NodeMini Item;
 	List_node linked;
-	Node* array[3];//
+	Node* array[3];
 
 	//注册上端控件并添加到应用池
 	mainTank.basicTank = widgetInitialTank(array, 3, &Item2, &Item3, &Item4);
 	mainTank.basicLen = 3;
 	
-	//属性和动作设置
-	setDLListControlAttribute(&Item2, 1, 0, false);
-	setDLListControlEvent(&Item2, NULL, gui1);
+	//属性和动作绑定
+	setDLListControlAttribute(&Item2, 1, 0, false,true,false);
+	setDLListControlEvent(&Item2, NULL, gui);
 
-	setDLListControlAttribute(&Item3, 2, 0, false);
-	setDLListControlEvent(&Item3, NULL, gui2);
+	setDLListControlAttribute(&Item3, 2, 0, false, true, true);
+	setDLListControlEvent(&Item3, NULL, gui);
 
-	setDLListControlAttribute(&Item4, 3, 0, false);
-	setDLListControlEvent(&Item4, NULL, gui3);
+	setDLListControlAttribute(&Item4, 3, 0, false, true, false);
+	setDLListControlEvent(&Item4, NULL, gui);
 
 
 	printBasicControlGui(mainTank);
@@ -66,13 +48,13 @@ int main()
 	linkedAddList(&linked, &Item3);
 	linkedAddList(&linked, &Item4);
 	linkedGui(linked);
-	printf("\r\n---------------------\r\n");
+	
 	linkedDeleteList(&linked, 2);
 	linkedGui(linked);
-	printf("\r\n---------------------\r\n");
+	
 	linkedAddList(&linked, &Item3);
 	linkedGui(linked);
-	printf("\r\n---------------------\r\n");
+
 #else
 	Node Item, Item2,Item3, Item4;
 	List_node linked;
