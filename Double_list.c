@@ -61,6 +61,7 @@ int8_t linkedAddList(List_node* linked, Node* Item)
 	linked->tail = Item;
 	linked->num++;
 	linked->visit = linked->head->next;
+	linked->visit->gui_status = true;
 	return OK;
 }
 // 2.É¾³ý½Úµã

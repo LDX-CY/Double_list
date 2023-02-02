@@ -59,7 +59,7 @@ int main()
 	//初始化菜单
 	menuInitialization();
 	//根据用户设定载入菜单
-	menuUserInitialization('i');
+	menuUserInitialization('h');
 
 	menuVist = &menuGrade1;
 	while (true)

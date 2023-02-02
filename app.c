@@ -76,24 +76,30 @@ MenuItem* appDOWN(void* paramter)
 //上一个节点
 MenuItem* appLEFT(void* paramter)
 {
+	//清除gui的选择状态
+	((MenuItem*)paramter)->linked_pointer->visit->gui_status = false;
 	//先保证当前菜单下有至少2个菜单节点
 	if (((MenuItem*)paramter)->linked_pointer->num > 1)
 	{
 		//如果访问指针指向了头节点
 		if (((MenuItem*)paramter)->linked_pointer->visit->prev->id == 0)
 		{
-			((MenuItem*)paramter)->linked_pointer->visit = ((MenuItem*)paramter)->linked_pointer->visit->prev->prev;
+			((MenuItem*)paramter)->linked_pointer->visit = ((MenuItem*)paramter)->linked_pointer->visit->prev->prev;	
 		}
 		else
 		{
 			((MenuItem*)paramter)->linked_pointer->visit = ((MenuItem*)paramter)->linked_pointer->visit->prev;
 		}
 	}
+	//添加选择状态
+	((MenuItem*)paramter)->linked_pointer->visit->gui_status = true;
 	return paramter;
 }
 //下一个节点
 MenuItem* appRIGHT(void* paramter)
 {
+	//清除gui的选择状态
+	((MenuItem*)paramter)->linked_pointer->visit->gui_status = false;
 	//保障菜单项下有菜单节点
 	if (((MenuItem*)paramter)->linked_pointer->num > 0)
 	{
@@ -116,6 +122,8 @@ MenuItem* appRIGHT(void* paramter)
 			((MenuItem*)paramter)->linked_pointer->visit = ((MenuItem*)paramter)->linked_pointer->visit->next;
 	}
 	//((MenuItem*)paramter)->linked_pointer->visit->gui(((MenuItem*)paramter)->linked_pointer->visit);
+	//gui的选择状态为选中
+	((MenuItem*)paramter)->linked_pointer->visit->gui_status = true;
 	return paramter;
 }
 MenuItem* appENTER(void* paramter)
