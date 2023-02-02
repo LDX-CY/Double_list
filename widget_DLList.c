@@ -175,7 +175,7 @@ void act(void* paramter)
 
 //菜单初始化
 //必须在链表已经载入完成的情况下才能初始化菜单节点
-void menuLinkedListIintial(MenuItem* menuItem, 
+void menuLinkedListInitial(MenuItem* menuItem, 
 						   List_node* menuLinked, 
 						   int8_t menu_grade, 
 	                       void* (*menuPointAction)(void* paramter),
@@ -201,6 +201,21 @@ void menuLinkedListIintial(MenuItem* menuItem,
 		}
 	}
 	
+}
+//菜单控件池初始化
+void menuLinkedListArrayInitial(MenuItem* menuItem,
+	void** controlTank,
+	int8_t menu_grade,
+	void* (*menuPointAction)(void* paramter))
+{
+	menuItem->menu_grade = menu_grade;
+	menuItem->linked_pointer = NULL;
+	menuItem->menuPointAction = menuPointAction;
+	menuItem->menu_type = true;
+	menuItem->controlTank = controlTank;
+	menuItem->next_MenuArray = NULL;
+	menuItem->prev_MenuPoint = NULL;
+
 }
 //必须按照树状结构链接，否则链接失败，先树的树干后树的叶子等
 //上一级菜单链接下一级菜单节点

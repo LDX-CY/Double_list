@@ -20,9 +20,12 @@ NodeMini Item, menuNode10, menuNode20, menuNode30;//头节点
 List_node linked, menuLinked1;//链表（一个MenuItem定义一个链表）
 List_node menuLinked2;
 List_node menuLinked3;
-Node* array[3];
-MenuItem menuGrade1, menuGrade2, menuGrade3;
+Node* array[MIN_SHOWTOP_LENGTH];
+MenuItem menuGrade1, menuGrade2, menuGrade3, menuGrade2_1;
 MenuItem* menuArray1[3], * menuArray2[3], * menuArray3[3];
+
+//数组访问下标
+int8_t array_visit = 0;
 
 void* actMenuItem(void* paramter);
 
@@ -44,12 +47,22 @@ void passwordGUI()
 void menuGUI(MenuItem MenuGrade)
 {
 	int8_t i;
-	Node* visit = MenuGrade.linked_pointer->head;
-	for (i = 0;i < MenuGrade.linked_pointer->num; i++)
+	Node* visit;
+	if (MenuGrade.menu_type == false)
 	{
-		visit = visit->next;
-		visit->gui(visit);
+		visit = MenuGrade.linked_pointer->head;
+		for (i = 0;i < MenuGrade.linked_pointer->num; i++)
+		{
+			visit = visit->next;
+			visit->gui(visit);
+		}
 	}
+	else
+	{
+		for(i=0;i< MIN_SHOWTOP_LENGTH;i++)
+			((Node*)MenuGrade.controlTank[i])->gui((Node*)MenuGrade.controlTank[i]);
+	}
+	
 	
 }
 
@@ -57,89 +70,141 @@ MenuItem* appUP(void* paramter)
 {
 	if (((MenuItem*)paramter)->prev_MenuPoint != NULL)
 	{
-		//向上访问将本级访问指针指向头节点
-		((MenuItem*)paramter)->linked_pointer->visit = ((MenuItem*)paramter)->linked_pointer->head;
+		//确定当前菜单类型不是数组类型
+		if(((MenuItem*)paramter)->menu_type != true)
+			//向上访问将本级访问指针指向头节点
+			((MenuItem*)paramter)->linked_pointer->visit = ((MenuItem*)paramter)->linked_pointer->head;
 		((MenuItem*)paramter) = ((MenuItem*)paramter)->prev_MenuPoint;
 	}
 	return paramter;
 }
 MenuItem* appDOWN(void* paramter)
 {
+	
 	if (((MenuItem*)paramter)->linked_pointer->num > 0)
 	{
-		((MenuItem*)paramter) = ((MenuItem*)paramter)->next_MenuArray[((MenuItem*)paramter)->linked_pointer->visit->id-1];
-		if(((MenuItem*)paramter)->linked_pointer->visit->id==0)
-			((MenuItem*)paramter)->linked_pointer->visit = ((MenuItem*)paramter)->linked_pointer->head->next;
+		((MenuItem*)paramter) = ((MenuItem*)paramter)->next_MenuArray[((MenuItem*)paramter)->linked_pointer->visit->id - 1];
+		//链表模式
+		if (((MenuItem*)paramter)->menu_type != true)
+		{
+			if (((MenuItem*)paramter)->linked_pointer->visit->id == 0)
+				((MenuItem*)paramter)->linked_pointer->visit = ((MenuItem*)paramter)->linked_pointer->head->next;
+		}
 	}
+	
 	return paramter;
 }
 //上一个节点
 MenuItem* appLEFT(void* paramter)
 {
-	//清除gui的选择状态
-	((MenuItem*)paramter)->linked_pointer->visit->gui_status = false;
-	//先保证当前菜单下有至少2个菜单节点
-	if (((MenuItem*)paramter)->linked_pointer->num > 1)
+	if (((MenuItem*)paramter)->menu_type != true)
 	{
-		//如果访问指针指向了头节点
-		if (((MenuItem*)paramter)->linked_pointer->visit->prev->id == 0)
+		//清除gui的选择状态
+		((MenuItem*)paramter)->linked_pointer->visit->gui_status = false;
+		//保障菜单项下有菜单节点
+		if (((MenuItem*)paramter)->linked_pointer->num > 0)
 		{
-			((MenuItem*)paramter)->linked_pointer->visit = ((MenuItem*)paramter)->linked_pointer->visit->prev->prev;	
+			//当前节点如果是头节点,则指向下一个节点
+			if (((MenuItem*)paramter)->linked_pointer->visit->id == 0)
+			{
+				((MenuItem*)paramter)->linked_pointer->visit = ((MenuItem*)paramter)->linked_pointer->visit->next;
+			}
+
 		}
-		else
+		//先保证当前菜单下有至少2个菜单节点
+		if (((MenuItem*)paramter)->linked_pointer->num > 1)
 		{
-			((MenuItem*)paramter)->linked_pointer->visit = ((MenuItem*)paramter)->linked_pointer->visit->prev;
+			//如果访问指针指向了头节点
+			if (((MenuItem*)paramter)->linked_pointer->visit->prev->id == 0)
+			{
+				((MenuItem*)paramter)->linked_pointer->visit = ((MenuItem*)paramter)->linked_pointer->visit->prev->prev;
+			}
+			else
+			{
+				((MenuItem*)paramter)->linked_pointer->visit = ((MenuItem*)paramter)->linked_pointer->visit->prev;
+			}
 		}
+		//添加选择状态
+		((MenuItem*)paramter)->linked_pointer->visit->gui_status = true;
 	}
-	//添加选择状态
-	((MenuItem*)paramter)->linked_pointer->visit->gui_status = true;
+	else
+	{
+		//清除前一个状态
+		((Node*)((MenuItem*)paramter)->controlTank[array_visit])->gui_status = false;
+		if (--array_visit < 0)
+			array_visit = MIN_SHOWTOP_LENGTH - 1;
+		((Node*)((MenuItem*)paramter)->controlTank[array_visit])->gui_status = true;
+	}
+		
+	
 	return paramter;
 }
 //下一个节点
 MenuItem* appRIGHT(void* paramter)
 {
-	//清除gui的选择状态
-	((MenuItem*)paramter)->linked_pointer->visit->gui_status = false;
-	//保障菜单项下有菜单节点
-	if (((MenuItem*)paramter)->linked_pointer->num > 0)
+	if (((MenuItem*)paramter)->menu_type != true)
 	{
-		//当前节点如果是头节点,则指向下一个节点
-		if (((MenuItem*)paramter)->linked_pointer->visit->id == 0)
+		//清除gui的选择状态
+		((MenuItem*)paramter)->linked_pointer->visit->gui_status = false;
+		//保障菜单项下有菜单节点
+		if (((MenuItem*)paramter)->linked_pointer->num > 0)
 		{
-			((MenuItem*)paramter)->linked_pointer->visit = ((MenuItem*)paramter)->linked_pointer->visit->next;
+			//当前节点如果是头节点,则指向下一个节点
+			if (((MenuItem*)paramter)->linked_pointer->visit->id == 0)
+			{
+				((MenuItem*)paramter)->linked_pointer->visit = ((MenuItem*)paramter)->linked_pointer->visit->next;
+			}
+
 		}
-		
+		//先保证当前菜单下有至少2个菜单节点
+		if (((MenuItem*)paramter)->linked_pointer->num > 1)
+		{
+			//如果下一个节点指向的是头节点，那么指向头节点的下一个节点
+			if (((MenuItem*)paramter)->linked_pointer->visit->next->id == 0)
+			{
+				((MenuItem*)paramter)->linked_pointer->visit = ((MenuItem*)paramter)->linked_pointer->head->next;
+			}
+			else
+				((MenuItem*)paramter)->linked_pointer->visit = ((MenuItem*)paramter)->linked_pointer->visit->next;
+		}
+		//gui的选择状态为选中
+		((MenuItem*)paramter)->linked_pointer->visit->gui_status = true;
 	}
-	//先保证当前菜单下有至少2个菜单节点
-	if (((MenuItem*)paramter)->linked_pointer->num > 1)
+	else
 	{
-		//如果下一个节点指向的是头节点，那么指向头节点的下一个节点
-		if (((MenuItem*)paramter)->linked_pointer->visit->next->id == 0)
-		{
-			((MenuItem*)paramter)->linked_pointer->visit = ((MenuItem*)paramter)->linked_pointer->head->next;
-		}
-		else
-			((MenuItem*)paramter)->linked_pointer->visit = ((MenuItem*)paramter)->linked_pointer->visit->next;
+		//清除前一个状态
+		((Node*)((MenuItem*)paramter)->controlTank[array_visit])->gui_status = false;
+		if (++array_visit >= MIN_SHOWTOP_LENGTH)
+			array_visit = 0;
+		((Node*)((MenuItem*)paramter)->controlTank[array_visit])->gui_status = true;
 	}
-	//((MenuItem*)paramter)->linked_pointer->visit->gui(((MenuItem*)paramter)->linked_pointer->visit);
-	//gui的选择状态为选中
-	((MenuItem*)paramter)->linked_pointer->visit->gui_status = true;
 	return paramter;
 }
 MenuItem* appENTER(void* paramter)
 {
-	//下一级菜单存在
-	if (((MenuItem*)paramter)->next_MenuArray[((MenuItem*)paramter)->linked_pointer->visit->id-1] != NULL)
+	//不是数组菜单
+	if (((MenuItem*)paramter)->menu_type != true)
 	{
-		//向下移动
-		((MenuItem*)paramter) = appDOWN(paramter);
-		((MenuItem*)paramter)->linked_pointer->visit->gui(((MenuItem*)paramter)->linked_pointer->visit);
+		//下一级菜单存在
+		if (((MenuItem*)paramter)->next_MenuArray[((MenuItem*)paramter)->linked_pointer->visit->id - 1] != NULL)
+		{
+			//向下移动
+			((MenuItem*)paramter) = appDOWN(paramter);
+			if (((MenuItem*)paramter)->menu_type != true)
+				((MenuItem*)paramter)->linked_pointer->visit->gui(((MenuItem*)paramter)->linked_pointer->visit);
+			else
+				((Node*)((MenuItem*)paramter)->controlTank[0])->gui(((MenuItem*)paramter)->controlTank[0]);
+		}
+		//下级菜单不存在
+		else
+		{
+			((MenuItem*)paramter)->linked_pointer->visit->action(((MenuItem*)paramter)->linked_pointer->visit);
+			return ((MenuItem*)paramter);
+		}
+		return ((MenuItem*)paramter);
 	}
-	//下一级菜单不存在，则是进入菜单的动作
-	else
-	{
-		((MenuItem*)paramter)->linked_pointer->visit->action(((MenuItem*)paramter)->linked_pointer->visit);
-	}
+	//数组菜单不存在下级菜单直接进入数组菜单的动作
+	((Node*)((MenuItem*)paramter)->controlTank[array_visit])->action(((MenuItem*)paramter)->controlTank[array_visit]);
 	return ((MenuItem*)paramter);
 }
 MenuItem* appQUIT(void* paramter)
@@ -222,13 +287,13 @@ void menuInitialization()
 	setDLListControlAttribute(&menuNode2, 2, 0, false, false, false);
 	setDLListControlEvent(&menuNode2, act, gui);
 
-	setDLListControlAttribute(&menuNode3, 3, 0, false, false, false);
+	setDLListControlAttribute(&menuNode3, 1, 0, false, false, false);
 	setDLListControlEvent(&menuNode3, act, gui);
 
-	setDLListControlAttribute(&menuNode4, 4, 0, false, false, false);
+	setDLListControlAttribute(&menuNode4, 1, 0, false, false, false);
 	setDLListControlEvent(&menuNode4, act, gui);
 
-	//菜单项初始化
+	//菜单列表初始化
 	linkedListInit(&menuLinked1, &menuNode10);
 	linkedListInit(&menuLinked2, &menuNode20);
 	linkedListInit(&menuLinked3, &menuNode30);
@@ -255,6 +320,7 @@ void menuUserInitialization(int8_t userPass)
 		linkedAddList(&menuLinked3, &menuNode4);
 		//链表下的菜单控件节点载入
 		linkedNumAddList(&menuLinked1, 2, &menuNode1, &menuNode2);
+		menuLinkedListArrayInitial(&menuGrade2_1, array, 3, actMenuItem);
 	
 	}
 	else if (userPass == 'i')
@@ -268,13 +334,14 @@ void menuUserInitialization(int8_t userPass)
 	}
 	
 	//初始化菜单项节点
-	menuLinkedListIintial(&menuGrade1, &menuLinked1, 1, actMenuItem, menuArray1);
-	menuLinkedListIintial(&menuGrade2, &menuLinked2, 2, actMenuItem, menuArray2);
-	menuLinkedListIintial(&menuGrade3, &menuLinked3, 2, actMenuItem, menuArray3);
+	menuLinkedListInitial(&menuGrade1, &menuLinked1, 1, actMenuItem, menuArray1);
+	menuLinkedListInitial(&menuGrade2, &menuLinked2, 2, actMenuItem, menuArray2);
+	menuLinkedListInitial(&menuGrade3, &menuLinked3, 2, actMenuItem, menuArray3);
 	
 
 	//上下级菜单的链接
 	menuLinked(&menuGrade1, &menuGrade2, &menuGrade3);
+	menuLinked(&menuGrade2, &menuGrade2_1);
 
 	CLE_STATUS(BIT_flag, BIT0);
 }

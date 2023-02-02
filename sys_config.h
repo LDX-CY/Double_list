@@ -10,7 +10,7 @@
 
 #define STR_USER_CONFIG 1
 
-#define MIN_SHOWTOP_LENGTH 8 //上端显示项目的总数目
+#define MIN_SHOWTOP_LENGTH 3 //上端显示项目的总数目
 
 /******按键（红外）配置******/
 #define UP      'w'	//返回上一级

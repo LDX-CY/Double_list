@@ -36,11 +36,16 @@ void clearBasicControlTank();
 void clearDataControlTank();
 
 //菜单设置
-void menuLinkedListIintial(MenuItem* menuItem,
+void menuLinkedListInitial(MenuItem* menuItem,
 	List_node* menuLinked,
 	int8_t menu_grade,
 	void* (*menuPointAction)(void* paramter),
 	MenuItem** menuArray);
+//菜单类型为数组类型
+void menuLinkedListArrayInitial(MenuItem* menuItem,
+	void** controlTank,
+	int8_t menu_grade,
+	void* (*menuPointAction)(void* paramter));
 //各级菜单的链接
 int8_t menuLinked(MenuItem* menuHighGrade, ...);
 

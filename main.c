@@ -19,7 +19,7 @@ extern NodeMini menuNode10, menuNode20, menuNode30;//头节点
 extern List_node menuLinked1;//链表（一个MenuItem定义一个链表）
 extern List_node menuLinked2;
 extern List_node menuLinked3;
-extern MenuItem menuGrade1, menuGrade2, menuGrade3;
+extern MenuItem menuGrade1, menuGrade2, menuGrade3, menuGrade2_1;
 extern MenuItem* menuArray1[3], * menuArray2[3], * menuArray3[3];
 
 //按键键值
@@ -62,6 +62,9 @@ int main()
 	menuUserInitialization('h');
 
 	menuVist = &menuGrade1;
+	//print(UART_Send, "%d", menuVist->next_MenuArray[0]);
+	
+	//menuGUI(*menuVist);
 	while (true)
 	{
 		key_value = 0;
