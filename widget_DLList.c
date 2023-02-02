@@ -178,7 +178,7 @@ void act(void* paramter)
 void menuLinkedListIintial(MenuItem* menuItem, 
 						   List_node* menuLinked, 
 						   int8_t menu_grade, 
-	                       void (*menuPointAction)(void* paramter),
+	                       void* (*menuPointAction)(void* paramter),
 	                       MenuItem** menuArray)
 {
 	int8_t i;
@@ -195,8 +195,9 @@ void menuLinkedListIintial(MenuItem* menuItem,
 	{
 		for (i = 0;i < menuLinked->num;i++)
 		{
+			node = node->next;
 			//ÉèÖÃ´ÓÊô
-			node->next->subordinate = menuItem;
+			node->subordinate = menuItem;
 		}
 	}
 	

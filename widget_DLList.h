@@ -39,7 +39,7 @@ void clearDataControlTank();
 void menuLinkedListIintial(MenuItem* menuItem,
 	List_node* menuLinked,
 	int8_t menu_grade,
-	void (*menuPointAction)(void* paramter),
+	void* (*menuPointAction)(void* paramter),
 	MenuItem** menuArray);
 //各级菜单的链接
 int8_t menuLinked(MenuItem* menuHighGrade, ...);

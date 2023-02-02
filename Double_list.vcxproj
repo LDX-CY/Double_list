@@ -139,14 +139,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="app.c" />
     <ClCompile Include="Double_list.c" />
+    <ClCompile Include="keyboard.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="str_user.c" />
     <ClCompile Include="widget_DLList.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="app.h" />
     <ClInclude Include="Double_list.h" />
     <ClInclude Include="include_user.h" />
+    <ClInclude Include="keyboard.h" />
     <ClInclude Include="status_user.h" />
     <ClInclude Include="str_user.h" />
     <ClInclude Include="sys_config.h" />

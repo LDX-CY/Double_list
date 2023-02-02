@@ -60,6 +60,7 @@ int8_t linkedAddList(List_node* linked, Node* Item)
 	linked->tail->next = Item;
 	linked->tail = Item;
 	linked->num++;
+	linked->visit = linked->head->next;
 	return OK;
 }
 // 2.删除节点
@@ -91,4 +92,26 @@ void linkedClearList(List_node* linked)
 	linked->head->prev = linked->head;
 	linked->num = 0;
 	linked->visit = linked->head;
+}
+
+//可变参将控件传入链表
+void linkedNumAddList(List_node* linked, int16_t num, ...)
+{
+	va_list ap;
+#if (win64 == 1)
+	__crt_va_start(ap, num);
+#else
+	va_start(ap, num);
+#endif // (win64 == 1)
+	for (int8_t i = 0; i < num; i++)
+	{
+		linkedAddList(linked,
+#if (win64==1)
+			__crt_va_arg(ap, Node*)
+#else
+			va_arg(ap, Node*)
+#endif // (win64==1)
+		);
+	}
+	
 }

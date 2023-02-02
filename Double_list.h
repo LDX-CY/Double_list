@@ -47,12 +47,16 @@ struct MenuPoint
 	void** controlTank;//控件池
 	struct MenuPoint* prev_MenuPoint;
 	struct MenuPoint** next_MenuArray;
-	void (*menuPointAction)(void* paramter);//动作
+	void* (*menuPointAction)(void* paramter);//动作
 };
 
 int8_t linkedListInit(List_node* linked, NodeMini* Item);
 int8_t linkedAddList(List_node* linked, Node* Item);
 int8_t linkedDeleteList(List_node* linked, int16_t id);
+//可变参将控件传入链表
+void linkedNumAddList(List_node* linked, int16_t num, ...);
+//清除链表
+void linkedClearList(List_node* linked);
 
 #endif // !DOUBLE_LIST_H
 
