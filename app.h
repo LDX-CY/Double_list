@@ -5,6 +5,9 @@
 #include "Double_list.h"
 #include "widget_DLList.h"
 
+
+extern status BIT_flag;
+
 extern Node  Item2, Item3, Item4, menuNode1, menuNode2, menuNode3, menuNode4;
 extern NodeMini Item, menuNode10, menuNode20, menuNode30;//头节点
 extern List_node linked, menuLinked1;//链表（一个MenuItem定义一个链表）

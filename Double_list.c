@@ -62,6 +62,8 @@ int8_t linkedAddList(List_node* linked, Node* Item)
 	linked->num++;
 	linked->visit = linked->head->next;
 	linked->visit->gui_status = true;
+	//从属于链表
+	Item->subordinate = linked;
 	return OK;
 }
 // 2.删除节点
@@ -74,6 +76,8 @@ int8_t linkedDeleteList(List_node* linked, int16_t id)
 		return DLLIST_ERROR;
 	if (Item->id == linked->tail->id)
 		linked->tail = Item->prev;
+	//删除从属关系
+	Item->subordinate = NULL;
 	//删除节点
 	Item->prev->next = Item->next;
 	Item->next->prev = Item->prev;

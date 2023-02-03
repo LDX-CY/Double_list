@@ -10,6 +10,9 @@
 #include "keyboard.h"
 #include "app.h"
 
+//状态寄存器
+extern status BIT_flag;
+
 //在实际使用中，直接利用mainTank即可实现应用，不再关心创建的是什么数组
 extern App_tank mainTank;
 

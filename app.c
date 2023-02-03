@@ -48,6 +48,11 @@ void menuGUI(MenuItem MenuGrade)
 {
 	int8_t i;
 	Node* visit;
+	if (GET_STATUS(BIT_flag, BIT1))
+	{
+		linkedGui(linked);
+		CLE_STATUS(BIT_flag, BIT1);
+	}
 	if (MenuGrade.menu_type == false)
 	{
 		visit = MenuGrade.linked_pointer->head;
@@ -59,11 +64,9 @@ void menuGUI(MenuItem MenuGrade)
 	}
 	else
 	{
-		for(i=0;i< MIN_SHOWTOP_LENGTH;i++)
+		for (i = 0;i < MIN_SHOWTOP_LENGTH;i++)
 			((Node*)MenuGrade.controlTank[i])->gui((Node*)MenuGrade.controlTank[i]);
-	}
-	
-	
+	}	
 }
 
 MenuItem* appUP(void* paramter)
@@ -266,10 +269,10 @@ void mainBasicInit()
 	mainTank.basicLen = 3;
 
 	//属性和动作绑定
-	setDLListControlAttribute(&Item2, 1, 0, false, true, false);
+	setDLListControlAttribute(&Item2, 1, 0, false, true, true);
 	setDLListControlEvent(&Item2, act, gui);
 
-	setDLListControlAttribute(&Item3, 2, 0, false, true, true);
+	setDLListControlAttribute(&Item3, 2, 0, false, true, false);
 	setDLListControlEvent(&Item3, act, gui);
 
 	setDLListControlAttribute(&Item4, 3, 0, false, true, false);
@@ -279,8 +282,10 @@ void mainBasicInit()
 	linkedListInit(&linked, &Item);
 	//向选择器中添加指定内容
 	linkedAddList(&linked, array[0]);
-	linkedAddList(&linked, &Item3);
-	linkedAddList(&linked, &Item4);
+	//linkedAddList(&linked, &Item3);
+	//linkedAddList(&linked, &Item4);
+
+
 	linkedGui(linked);
 }
 

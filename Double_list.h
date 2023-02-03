@@ -17,7 +17,7 @@ typedef struct Double_item
 	bool gui_status;//选择状态，布尔值false/true
 	bool gui_option;//选项框，与gui_option_status组合使用，布尔值false/true
 	bool gui_option_status;//选项框确定与否的状态，布尔值false/true
-	void* subordinate;//节点的从属
+	void* subordinate;//节点的从属(均从属于链表节点)
 }Node;
 
 

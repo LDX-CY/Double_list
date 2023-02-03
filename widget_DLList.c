@@ -3,6 +3,7 @@
 
 App_tank mainTank;
 
+extern List_node linked;
 
 //设置控件的属性
 //id:控件id
@@ -133,6 +134,16 @@ void clearDataControlTank()
 }
 
 
+//被选中的动作程序
+void actNodeOptionIsTrue(void* paramter)
+{
+	linkedAddList(&linked, (Node*)paramter);
+}
+void actNodeOptionIsFalse(void* paramter)
+{
+	linkedDeleteList((List_node*)((Node*)paramter)->subordinate, ((Node*)paramter)->id);
+}
+
 void gui(void* paramter)
 {
 	//对option的支持
@@ -161,9 +172,17 @@ void act(void* paramter)
 	{
 		((Node*)paramter)->gui_option_status = !((Node*)paramter)->gui_option_status;
 		if (((Node*)paramter)->gui_option_status)
+		{
 			print(UART_Send, "[#]");
+			//节点的添加
+			actNodeOptionIsTrue(paramter);
+		}	
 		else
+		{
 			print(UART_Send, "[]");
+			//节点的删除
+			actNodeOptionIsFalse(paramter);
+		}
 	}
 	if (((Node*)paramter)->gui_status != true)
 		print(UART_Send, "[%d]\r\n", ((Node*)paramter)->id);
