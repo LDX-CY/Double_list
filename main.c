@@ -51,10 +51,10 @@ int main()
 	MenuItem* menuVist;
 #if (win64 == 1)
 	
-	//初始化主界面上端显示
+	//初始化主界面上端显示(初始化了mainTank)
 	mainBasicInit();
 	//输出上端GUI
-	printBasicControlGui(mainTank);
+	printBasicControlGui();
 
 	print(UART_Send, "\r\n------------------------------\r\n");
 
@@ -71,6 +71,7 @@ int main()
 	{
 		key_value = 0;
 		menuGUI(*menuVist);
+		//print(UART_Send, "\r\n");
 		print(UART_Send, "\r\n--------------------------\r\n");
 		passwordGUI();
 		keyboardValue();

@@ -32,29 +32,29 @@ int8_t setDLListControlEvent(Node* Item, void (*action)(void* paramter), void (*
 	return OK;
 }
 //输出基本ui
-void printBasicControlGui(App_tank tank)
+void printBasicControlGui()
 {
 	int8_t length;
-	for (length = 0;length < tank.basicLen;length++)
+	for (length = 0;length < mainTank.basicLen;length++)
 	{
-		tank.basicTank[length]->gui(tank.basicTank[length]);
+		mainTank.basicTank[length]->gui(mainTank.basicTank[length]);
 	}
 }
 //输出测量结果ui
-void printDataControlGui(App_tank tank)
+void printDataControlGui()
 {
 	int8_t length;
-	for (length = 0; length < tank.dataLen; length++)
+	for (length = 0; length < mainTank.dataLen; length++)
 	{
-		tank.dataTank[length]->gui(tank.basicTank[length]);
+		mainTank.dataTank[length]->gui(mainTank.basicTank[length]);
 	}
 }
 
 //同时刷新basic和datatank
-void printControlGui(App_tank tank)
+void printControlGui()
 {
-	printBasicControlGui(tank);
-	printDataControlGui(tank);
+	printBasicControlGui();
+	printDataControlGui();
 }
 
 

@@ -29,9 +29,9 @@ void act(void* paramter);
 //控件的操作和控件池的操作
 int8_t setDLListControlAttribute(Node* Item, int16_t id, int8_t unit_flag, bool gui_option, bool gui_option_status);
 int8_t setDLListControlEvent( Node* Item, void (*action)(void* paramter), void (*gui)(void* paramter));
-void printBasicControlGui(App_tank tank);
-void printDataControlGui(App_tank tank);
-void printControlGui(App_tank tank);
+void printBasicControlGui();
+void printDataControlGui();
+void printControlGui();
 void clearBasicControlTank();
 void clearDataControlTank();
 

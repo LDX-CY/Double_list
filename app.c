@@ -6,32 +6,38 @@
 #include "str_user.h"
 //BITO:菜单初始化状态
 //BIT1:退回主界面状态
-//BIT2:
-//BIT3:
+//BIT2:密码输入模式
+//BIT3:函数动作模式
 //BIT4:
 //BIT5:
 //BIT6:
 //BIT7:
+//按键的软件动作都是根据该状态判断
 status BIT_flag = 0;
 extern int8_t key_value;
 
 Node  Item2, Item3, Item4, menuNode1, menuNode2, menuNode3, menuNode4;
 NodeMini Item, menuNode10, menuNode20, menuNode30;//头节点
-List_node linked, menuLinked1;//链表（一个MenuItem定义一个链表）
+List_node linked;//可选择的主界面上端显示链表
+List_node menuLinked1;//链表（一个MenuItem定义一个链表）
 List_node menuLinked2;
 List_node menuLinked3;
 Node* array[MIN_SHOWTOP_LENGTH];
 MenuItem menuGrade1, menuGrade2, menuGrade3, menuGrade2_1;
 MenuItem* menuArray1[3], * menuArray2[3], * menuArray3[3];
 
+extern App_tank mainTank;
+
 //数组访问下标
 int8_t array_visit = 0;
 
 void* actMenuItem(void* paramter);
-
+/// <summary>
+/// 主界面gui接口（默认显示界面）
+/// </summary>
 void mainGUI()
 {
-	if (SET_STATUS(BIT_flag, BIT1))
+	if (GET_STATUS(BIT_flag, BIT1))
 	{
 		//在这里填入主界面GUI函数,主界面只在特定的状态刷新全主界面框架
 
@@ -40,10 +46,19 @@ void mainGUI()
 	}
 	
 }
+/// <summary>
+/// 输入密码的gui接口
+/// </summary>
 void passwordGUI()
 {
 	print(UART_Send, "\r\n请输入密码：");
 }
+/// <summary>
+/// 菜单gui显示到荧幕
+/// </summary>
+/// <param name="MenuGrade">
+/// 菜单访问节点（需要自己定义访问指针）
+/// </param>
 void menuGUI(MenuItem MenuGrade)
 {
 	int8_t i;
@@ -52,6 +67,7 @@ void menuGUI(MenuItem MenuGrade)
 	{
 		//linked.visit = linked.head->next;
 		linkedGui(linked);
+		print(UART_Send, "\r\n");
 		CLE_STATUS(BIT_flag, BIT1);
 	}
 	if (MenuGrade.menu_type == false)
@@ -59,17 +75,28 @@ void menuGUI(MenuItem MenuGrade)
 		visit = MenuGrade.linked_pointer->head;
 		for (i = 0;i < MenuGrade.linked_pointer->num; i++)
 		{
+			//越过头节点
 			visit = visit->next;
 			visit->gui(visit);
 		}
 	}
+	//array list
 	else
 	{
 		for (i = 0;i < MIN_SHOWTOP_LENGTH;i++)
 			((Node*)MenuGrade.controlTank[i])->gui((Node*)MenuGrade.controlTank[i]);
 	}	
+	
 }
-
+/// <summary>
+/// 上一级动作
+/// </summary>
+/// <param name="paramter">
+/// 当前菜单项
+/// </param>
+/// <returns>
+/// 上一级的菜单地址
+/// </returns>
 MenuItem* appUP(void* paramter)
 {
 	if (((MenuItem*)paramter)->prev_MenuPoint != NULL)
@@ -82,6 +109,15 @@ MenuItem* appUP(void* paramter)
 	}
 	return paramter;
 }
+/// <summary>
+/// 下一级动作
+/// </summary>
+/// <param name="paramter">
+/// 当前菜单项
+/// </param>
+/// <returns>
+/// 下一级菜单地址
+/// </returns>
 MenuItem* appDOWN(void* paramter)
 {
 	
@@ -98,7 +134,15 @@ MenuItem* appDOWN(void* paramter)
 	
 	return paramter;
 }
-//上一个节点
+/// <summary>
+/// 查询上一个菜单节点
+/// </summary>
+/// <param name="paramter">
+/// 当前菜单项
+/// </param>
+/// <returns>
+/// 更新后的菜单项（更新菜单项中的菜单链表的访问节点）
+/// </returns>
 MenuItem* appLEFT(void* paramter)
 {
 	if (((MenuItem*)paramter)->menu_type != true)
@@ -143,7 +187,15 @@ MenuItem* appLEFT(void* paramter)
 	
 	return paramter;
 }
-//下一个节点
+/// <summary>
+/// 查询下一个菜单节点
+/// </summary>
+/// <param name="paramter">
+/// 当前菜单项
+/// </param>
+/// <returns>
+/// 更新后的菜单项（更新菜单项中的菜单链表的访问节点）
+/// </returns>
 MenuItem* appRIGHT(void* paramter)
 {
 	if (((MenuItem*)paramter)->menu_type != true)

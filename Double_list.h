@@ -42,7 +42,7 @@ typedef struct
 struct MenuPoint
 {
 	List_node* linked_pointer;//链表指针
-	bool menu_type;//菜单类型
+	bool menu_type;//菜单类型(false:普通链表，true:数组类型)
 	int8_t menu_grade;//当前菜单等级
 	void** controlTank;//控件池
 	struct MenuPoint* prev_MenuPoint;
