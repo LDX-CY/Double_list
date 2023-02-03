@@ -9,13 +9,13 @@ extern List_node linked;
 //id:控件id
 //unit_flag:单位类型
 //gui_status:选择状态
-int8_t setDLListControlAttribute(Node* Item, int16_t id, int8_t unit_flag, bool gui_status,bool gui_option,bool gui_option_status)
+int8_t setDLListControlAttribute(Node* Item, int16_t id, int8_t unit_flag, bool gui_option,bool gui_option_status)
 {
 	if (!Item)
 		return WIDGET_ERROR;
 	Item->id = id;
 	Item->unit_flag = unit_flag;
-	Item->gui_status = gui_status;
+	Item->gui_status = false;
 	Item->gui_option = gui_option;
 	Item->gui_option_status = gui_option_status;
 	Item->subordinate = NULL;
@@ -138,6 +138,8 @@ void clearDataControlTank()
 void actNodeOptionIsTrue(void* paramter)
 {
 	linkedAddList(&linked, (Node*)paramter);
+	if(linked.head->next->id != ((Node*)paramter)->id )
+		linked.head->next->gui_status = false;
 }
 void actNodeOptionIsFalse(void* paramter)
 {

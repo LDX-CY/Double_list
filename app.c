@@ -50,6 +50,7 @@ void menuGUI(MenuItem MenuGrade)
 	Node* visit;
 	if (GET_STATUS(BIT_flag, BIT1))
 	{
+		//linked.visit = linked.head->next;
 		linkedGui(linked);
 		CLE_STATUS(BIT_flag, BIT1);
 	}
@@ -269,13 +270,13 @@ void mainBasicInit()
 	mainTank.basicLen = 3;
 
 	//属性和动作绑定
-	setDLListControlAttribute(&Item2, 1, 0, false, true, true);
+	setDLListControlAttribute(&Item2, 1, 0, true, true);
 	setDLListControlEvent(&Item2, act, gui);
 
-	setDLListControlAttribute(&Item3, 2, 0, false, true, false);
+	setDLListControlAttribute(&Item3, 2, 0, true, false);
 	setDLListControlEvent(&Item3, act, gui);
 
-	setDLListControlAttribute(&Item4, 3, 0, false, true, false);
+	setDLListControlAttribute(&Item4, 3, 0, true, false);
 	setDLListControlEvent(&Item4, act, gui);
 
 	//控件选择器初始化
@@ -293,16 +294,16 @@ void mainBasicInit()
 void menuInitialization()
 {
 	//对菜单节点进行初始化
-	setDLListControlAttribute(&menuNode1, 1, 0, false, false, false);
+	setDLListControlAttribute(&menuNode1, 1, 0, false, false);
 	setDLListControlEvent(&menuNode1, act, gui);
 
-	setDLListControlAttribute(&menuNode2, 2, 0, false, false, false);
+	setDLListControlAttribute(&menuNode2, 2, 0,  false, false);
 	setDLListControlEvent(&menuNode2, act, gui);
 
-	setDLListControlAttribute(&menuNode3, 1, 0, false, false, false);
+	setDLListControlAttribute(&menuNode3, 1, 0,  false, false);
 	setDLListControlEvent(&menuNode3, act, gui);
 
-	setDLListControlAttribute(&menuNode4, 1, 0, false, false, false);
+	setDLListControlAttribute(&menuNode4, 1, 0,  false, false);
 	setDLListControlEvent(&menuNode4, act, gui);
 
 	//菜单列表初始化
