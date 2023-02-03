@@ -10,7 +10,7 @@ void keyboardValue()
 	
 #if (win64 == 1)
 	//printf("\r\nplease enter password:");
-	scanf("%c", &key_value);
+	scanf(" %c", &key_value);
 #else
 
 #endif // (win64 == 1)

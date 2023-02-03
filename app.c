@@ -190,10 +190,11 @@ MenuItem* appENTER(void* paramter)
 		{
 			//向下移动
 			((MenuItem*)paramter) = appDOWN(paramter);
-			if (((MenuItem*)paramter)->menu_type != true)
+			//测试代码
+			/*if (((MenuItem*)paramter)->menu_type != true)
 				((MenuItem*)paramter)->linked_pointer->visit->gui(((MenuItem*)paramter)->linked_pointer->visit);
 			else
-				((Node*)((MenuItem*)paramter)->controlTank[0])->gui(((MenuItem*)paramter)->controlTank[0]);
+				((Node*)((MenuItem*)paramter)->controlTank[0])->gui(((MenuItem*)paramter)->controlTank[0]);*/
 		}
 		//下级菜单不存在
 		else
