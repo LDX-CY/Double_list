@@ -45,8 +45,8 @@ struct MenuPoint
 	bool menu_type;//菜单类型
 	int8_t menu_grade;//当前菜单等级
 	void** controlTank;//控件池
-	struct MenuPoint* prev_MenuPoint;
-	struct MenuPoint** next_MenuArray;
+	struct MenuPoint* prev_MenuPoint;//上一级菜单指针
+	struct MenuPoint** next_MenuArray;//下一级菜单数组
 	void* (*menuPointAction)(void* paramter);//动作
 };
 

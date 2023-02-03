@@ -331,7 +331,8 @@ void menuUserInitialization(int8_t userPass)
 		//将菜单节点添加到链表
 		linkedAddList(&menuLinked2, &menuNode3);
 		linkedAddList(&menuLinked3, &menuNode4);
-		//链表下的菜单控件节点载入
+		//链表下的菜单节点载入
+		//linkedNumAddList(&menuLinked1, 2, &menuNode1, &menuNode2);
 		linkedNumAddList(&menuLinked1, 2, &menuNode1, &menuNode2);
 		menuLinkedListArrayInitial(&menuGrade2_1, array, 3, actMenuItem);
 	

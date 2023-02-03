@@ -270,7 +270,8 @@ int8_t menuLinked(MenuItem* menuHighGrade,...)
 #else
 		menuHighGrade->next_MenuArray[i] = va_arg(ap, MenuItem*);
 #endif // (win64 == 1)	
-		menuHighGrade->next_MenuArray[i]->prev_MenuPoint = menuHighGrade;
+		if(menuHighGrade->next_MenuArray[i]!=NULL)
+			menuHighGrade->next_MenuArray[i]->prev_MenuPoint = menuHighGrade;
 	}
 #if (win64 == 1)
 	__crt_va_end(ap);
