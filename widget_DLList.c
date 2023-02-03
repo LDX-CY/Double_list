@@ -155,6 +155,7 @@ void gui(void* paramter)
 
 void act(void* paramter)
 {
+	print(UART_Send, "\r\n当前是节点的act\r\n");
 	//对option的支持
 	if (((Node*)paramter)->gui_option)
 	{
@@ -165,10 +166,10 @@ void act(void* paramter)
 			print(UART_Send, "[]");
 	}
 	if (((Node*)paramter)->gui_status != true)
-		print(UART_Send, "[%d]", ((Node*)paramter)->id);
+		print(UART_Send, "[%d]\r\n", ((Node*)paramter)->id);
 	else
 	{
-		print(UART_Send, ">%d<", ((Node*)paramter)->id);
+		print(UART_Send, ">%d<\r\n", ((Node*)paramter)->id);
 	}
 	//方便对数据的整合
 	//printf("\r\n%c%d\r\n", 9>=10?'\0':'0',9);

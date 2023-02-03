@@ -3,7 +3,6 @@
 ，必须要在控件池（Node* array[]）中注册
 ，上端和中端需要分别在各自的控件池中注册
 */
-
 #include "Double_list.h"
 #include "include_user.h"
 #include "widget_DLList.h"
