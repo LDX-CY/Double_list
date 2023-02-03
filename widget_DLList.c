@@ -158,6 +158,7 @@ void act(void* paramter)
 	//对option的支持
 	if (((Node*)paramter)->gui_option)
 	{
+		((Node*)paramter)->gui_option_status = !((Node*)paramter)->gui_option_status;
 		if (((Node*)paramter)->gui_option_status)
 			print(UART_Send, "[#]");
 		else
