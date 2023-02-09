@@ -8,7 +8,7 @@
 //BIT1:退回主界面状态
 //BIT2:密码输入模式
 //BIT3:函数动作模式
-//BIT4:
+//BIT4:菜单模式
 //BIT5:
 //BIT6:
 //BIT7:
@@ -31,6 +31,8 @@ extern App_tank mainTank;
 //数组访问下标
 int8_t array_visit = 0;
 
+extern MenuItem* menuVist;
+
 void* actMenuItem(void* paramter);
 /// <summary>
 /// 主界面gui接口（默认显示界面）
@@ -42,7 +44,7 @@ void mainGUI()
 		//在这里填入主界面GUI函数,主界面只在特定的状态刷新全主界面框架
 
 		//清除全框架刷新
-		CLE_STATUS(BIT_flag, BIT1);
+		//CLE_STATUS(BIT_flag, BIT1);
 	}
 	
 }
@@ -51,7 +53,25 @@ void mainGUI()
 /// </summary>
 void passwordGUI()
 {
-	print(UART_Send, "\r\n请输入密码：");
+	//主界面模式
+	if (GET_STATUS(BIT_flag,BIT1)|| GET_STATUS(BIT_flag, BIT3))
+	{
+		print(UART_Send, "\r\n请输入按键值：");
+	}
+	//密码输入模式
+	else if (GET_STATUS(BIT_flag,BIT2))
+	{
+		print(UART_Send, "\r\n请输入密码：");
+	}
+	
+	keyboardValue();
+	switch(key_value)
+	{
+	case 'm':
+		//密码模式 
+		SET_STATUS(BIT_flag, BIT2); CLE_STATUS(BIT_flag, BIT1); break;
+	default: break;
+	}
 }
 /// <summary>
 /// 菜单gui显示到荧幕
@@ -59,33 +79,47 @@ void passwordGUI()
 /// <param name="MenuGrade">
 /// 菜单访问节点（需要自己定义访问指针）
 /// </param>
-void menuGUI(MenuItem MenuGrade)
+void menuGUI(MenuItem* MenuGrade)
 {
 	int8_t i;
 	Node* visit;
 	if (GET_STATUS(BIT_flag, BIT1))
 	{
 		//linked.visit = linked.head->next;
-		linkedGui(linked);
+		//linkedGui(linked);
 		print(UART_Send, "\r\n");
-		CLE_STATUS(BIT_flag, BIT1);
+		//CLE_STATUS(BIT_flag, BIT1);
 	}
-	if (MenuGrade.menu_type == false)
+	while (GET_STATUS(BIT_flag, BIT2))
 	{
-		visit = MenuGrade.linked_pointer->head;
-		for (i = 0;i < MenuGrade.linked_pointer->num; i++)
+		passwordGUI();
+		//清除密码输入状态
+		//CLE_STATUS(BIT_flag, BIT2);
+		//创建菜单
+		//menuInitCreat();
+		//根据用户设定载入菜单和创建菜单
+		menuUserInitialization(key_value);
+	}
+	if (GET_STATUS(BIT_flag, BIT4))
+	{
+		if ((*MenuGrade).menu_type == false)
 		{
-			//越过头节点
-			visit = visit->next;
-			visit->gui(visit);
+			visit = (*MenuGrade).linked_pointer->head;
+			for (i = 0; i < (*MenuGrade).linked_pointer->num; i++)
+			{
+				//越过头节点
+				visit = visit->next;
+				visit->gui(visit);
+			}
+		}
+		//array list
+		else
+		{
+			for (i = 0; i < MIN_SHOWTOP_LENGTH; i++)
+				((Node*)(*MenuGrade).controlTank[i])->gui((Node*)(*MenuGrade).controlTank[i]);
 		}
 	}
-	//array list
-	else
-	{
-		for (i = 0;i < MIN_SHOWTOP_LENGTH;i++)
-			((Node*)MenuGrade.controlTank[i])->gui((Node*)MenuGrade.controlTank[i]);
-	}	
+		
 	
 }
 /// <summary>
@@ -284,6 +318,8 @@ MenuItem* appQUIT(void* paramter)
 		//这里应该填写退回主界面状态
 		
 		SET_STATUS(BIT_flag, BIT1);
+		CLE_STATUS(BIT_flag, BIT3);
+		CLE_STATUS(BIT_flag, BIT4);
 		//mainGUI();
 		//((MenuItem*)paramter)->linked_pointer->visit->action(paramter);
 	}
@@ -306,7 +342,7 @@ MenuItem* application(void* paramter)
 		(MenuItem*)paramter = appQUIT(paramter);
 		break;
 	default:
-		//return choice;
+		paramter = NULL;
 		break;
 	}
 	return (MenuItem*)paramter;
@@ -342,8 +378,8 @@ void mainBasicInit()
 	linkedGui(linked);
 }
 
-//菜单初始化
-void menuInitialization()
+//创建链表菜单
+void menuInitCreat()
 {
 	//对菜单节点进行初始化
 	setDLListControlAttribute(&menuNode1, 1, 0, false, false);
@@ -368,13 +404,14 @@ void menuInitialization()
 }
 
 //依据userPass初始化菜单内容
+//具有创建菜单的功能
 void menuUserInitialization(int8_t userPass)
 {
 	if (!GET_STATUS(BIT_flag, BIT0))
 	{
-		menuInitialization();
+		menuInitCreat();
 	}
-	//每一次的载入都需要清零
+	//每一次的重载都需要清零
 	linkedClearList(&menuLinked1);
 	linkedClearList(&menuLinked2);
 	linkedClearList(&menuLinked3);
@@ -383,7 +420,8 @@ void menuUserInitialization(int8_t userPass)
 		//将菜单节点添加到链表
 		linkedAddList(&menuLinked2, &menuNode3);
 		linkedAddList(&menuLinked3, &menuNode4);
-		//链表下的菜单控件节点载入
+		//链表下的菜单节点载入
+		//linkedNumAddList(&menuLinked1, 2, &menuNode1, &menuNode2);
 		linkedNumAddList(&menuLinked1, 2, &menuNode1, &menuNode2);
 		menuLinkedListArrayInitial(&menuGrade2_1, array, 3, actMenuItem);
 	
@@ -397,23 +435,43 @@ void menuUserInitialization(int8_t userPass)
 		linkedNumAddList(&menuLinked1, 1, &menuNode1);
 		
 	}
-	
-	//初始化菜单项节点
-	menuLinkedListInitial(&menuGrade1, &menuLinked1, 1, actMenuItem, menuArray1);
-	menuLinkedListInitial(&menuGrade2, &menuLinked2, 2, actMenuItem, menuArray2);
-	menuLinkedListInitial(&menuGrade3, &menuLinked3, 2, actMenuItem, menuArray3);
-	
+	if (userPass == 'i' || userPass == 'h')
+	{
+		//初始化菜单项节点
+		menuLinkedListInitial(&menuGrade1, &menuLinked1, 1, actMenuItem, menuArray1);
+		menuLinkedListInitial(&menuGrade2, &menuLinked2, 2, actMenuItem, menuArray2);
+		menuLinkedListInitial(&menuGrade3, &menuLinked3, 2, actMenuItem, menuArray3);
 
-	//上下级菜单的链接
-	menuLinked(&menuGrade1, &menuGrade2, &menuGrade3);
-	menuLinked(&menuGrade2, &menuGrade2_1);
 
-	CLE_STATUS(BIT_flag, BIT0);
+		//上下级菜单的链接
+		menuLinked(&menuGrade1, &menuGrade2, &menuGrade3);
+		menuLinked(&menuGrade2, &menuGrade2_1);
+
+		menuVist = &menuGrade1;
+
+		//CLE_STATUS(BIT_flag, BIT0);
+		//进入菜单模式
+		SET_STATUS(BIT_flag, BIT4);
+		//清除主界面模式
+		CLE_STATUS(BIT_flag, BIT1);
+		CLE_STATUS(BIT_flag, BIT2);
+	}
+	else
+	{
+		//主界面模式
+		SET_STATUS(BIT_flag, BIT1);
+		//清除菜单模式
+		CLE_STATUS(BIT_flag, BIT4);
+	}
 }
 
 //菜单项的动作
+//主要是用作菜单和按键的控制
 void* actMenuItem(void* paramter)
 {
+	if(GET_STATUS(BIT_flag, BIT4))
+		SET_STATUS(BIT_flag, BIT3);
+	//passwordGUI();
 	return application(paramter);
 	//方便对数据的整合
 	//printf("\r\n%c%d\r\n", 9>=10?'\0':'0',9);
@@ -425,4 +483,27 @@ void actMenuNode(void* paramter)
 	//application(paramter);
 	//方便对数据的整合
 	//printf("\r\n%c%d\r\n", 9>=10?'\0':'0',9);
+}
+
+void menuScheduler(MenuItem MenuGrade)
+{
+	static uint8_t flag = 1;
+	static List_node* linkedVisit;
+	if (GET_STATUS(BIT_flag, BIT4))
+	{
+		flag = 1;
+		menuVist = menuVist->menuPointAction(menuVist);
+	}
+	else if (GET_STATUS(BIT_flag, BIT1))
+	{
+		if (flag)
+		{
+			flag = 0;
+			linkedVisit = &linked;
+			linkedVisit->visit = linked.head;
+		}
+		//linkedGui(linkedVisit);
+		linkedUserGui(linkedVisit);
+	}
+		
 }

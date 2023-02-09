@@ -6,9 +6,11 @@ App_tank mainTank;
 extern List_node linked;
 
 //设置控件的属性
-//id:控件id
-//unit_flag:单位类型
-//gui_status:选择状态
+//id:			控件id
+//unit_flag:		单位类型
+//gui_status:		选择状态
+//gui_option:		是否启用选项框
+//gui_option_status:	选项框的选择状态
 int8_t setDLListControlAttribute(Node* Item, int16_t id, int8_t unit_flag, bool gui_option,bool gui_option_status)
 {
 	if (!Item)
@@ -75,6 +77,25 @@ int8_t linkedGui(List_node linked)
 #endif // (win64 == 1)
 	}
 	return OK;
+}
+extern int8_t key_value;
+void linkedUserGui(List_node* linked)
+{
+	switch (key_value)
+	{
+	case LEFT:
+		linked->visit = linked->visit->next;
+		if (linked->visit == linked->head) linked->visit = linked->visit->next;
+		break;
+	case RIGHT:
+		linked->visit = linked->visit->prev;
+		if (linked->visit == linked->head) linked->visit = linked->visit->prev;
+		break;
+	default:
+
+		return;
+	}
+	linked->visit->gui(linked->visit);
 }
 
 
@@ -270,7 +291,8 @@ int8_t menuLinked(MenuItem* menuHighGrade,...)
 #else
 		menuHighGrade->next_MenuArray[i] = va_arg(ap, MenuItem*);
 #endif // (win64 == 1)	
-		menuHighGrade->next_MenuArray[i]->prev_MenuPoint = menuHighGrade;
+		if(menuHighGrade->next_MenuArray[i]!=NULL)
+			menuHighGrade->next_MenuArray[i]->prev_MenuPoint = menuHighGrade;
 	}
 #if (win64 == 1)
 	__crt_va_end(ap);

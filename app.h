@@ -19,14 +19,16 @@ extern MenuItem* menuArray1[3], * menuArray2[3], * menuArray3[3];
 
 //主界面上端的初始化
 void mainBasicInit();
-//所有菜单初始化
-void menuInitialization();
+//创建菜单
+void menuInitCreat();
 //用户菜单初始化（根据输入参数决定初始化内容）
 void menuUserInitialization(int8_t userPass);
 
 //密码输入界面和动作
 void passwordGUI();
 //菜单界面
-void menuGUI(MenuItem MenuGrade);
+void menuGUI(MenuItem* MenuGrade);
+//主界面显示控制
+void menuScheduler(MenuItem MenuGrade);
 
 #endif // !APP_H

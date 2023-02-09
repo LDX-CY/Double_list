@@ -15,7 +15,7 @@ typedef struct Double_item
 	int8_t unit_flag;//单位，暂时未确定有多少个单位切换
 	void (*gui)(void* paramter);//gui
 	bool gui_status;//选择状态，布尔值false/true
-	bool gui_option;//选项框，与gui_option_status组合使用，布尔值false/true
+	bool gui_option;//是否启用选项框，与gui_option_status组合使用，布尔值false/true
 	bool gui_option_status;//选项框确定与否的状态，布尔值false/true
 	void* subordinate;//节点的从属(均从属于链表节点)
 }Node;
@@ -45,8 +45,8 @@ struct MenuPoint
 	bool menu_type;//菜单类型(false:普通链表，true:数组类型)
 	int8_t menu_grade;//当前菜单等级
 	void** controlTank;//控件池
-	struct MenuPoint* prev_MenuPoint;
-	struct MenuPoint** next_MenuArray;
+	struct MenuPoint* prev_MenuPoint;//上一级菜单指针
+	struct MenuPoint** next_MenuArray;//下一级菜单数组
 	void* (*menuPointAction)(void* paramter);//动作
 };
 

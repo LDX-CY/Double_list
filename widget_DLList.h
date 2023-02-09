@@ -35,6 +35,8 @@ void printControlGui();
 void clearBasicControlTank();
 void clearDataControlTank();
 
+void linkedUserGui(List_node* linked);
+
 //≤Àµ•…Ë÷√
 void menuLinkedListInitial(MenuItem* menuItem,
 	List_node* menuLinked,

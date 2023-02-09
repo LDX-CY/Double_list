@@ -89,7 +89,12 @@ int8_t linkedDeleteList(List_node* linked, int16_t id)
 	return OK;
 }
 
-//清除链表
+/// <summary>
+/// 清除链表
+/// </summary>
+/// <param name="linked">
+/// 目标节点
+/// </param>
 void linkedClearList(List_node* linked)
 {
 	linked->tail = linked->head;
@@ -99,7 +104,19 @@ void linkedClearList(List_node* linked)
 	linked->visit = linked->head;
 }
 
-//可变参将控件传入链表
+
+/// <summary>
+/// 可变参将控件传入链表
+/// </summary>
+/// <param name="linked">
+/// 目标链表
+/// </param>
+/// <param name="num">
+/// 需要加入链表的节点数量
+/// </param>
+/// <param name="...">
+/// 加入链表的节点
+/// </param>
 void linkedNumAddList(List_node* linked, int16_t num, ...)
 {
 	va_list ap;
