@@ -16,16 +16,21 @@ extern status BIT_flag;
 //在实际使用中，直接利用mainTank即可实现应用，不再关心创建的是什么数组
 extern App_tank mainTank;
 
+//菜单节点
 extern Node  menuNode1, menuNode2, menuNode3, menuNode4;
-extern NodeMini menuNode10, menuNode20, menuNode30;//头节点
-extern List_node menuLinked1;//链表（一个MenuItem定义一个链表）
+//头节点
+extern NodeMini menuNode10, menuNode20, menuNode30;
+//链表（一个MenuItem定义一个链表）
+extern List_node menuLinked1;
 extern List_node menuLinked2;
 extern List_node menuLinked3;
+//菜单项
 extern MenuItem menuGrade1, menuGrade2, menuGrade3, menuGrade2_1;
 extern MenuItem* menuArray1[3], * menuArray2[3], * menuArray3[3];
 
 //按键键值
 extern int8_t key_value;
+//菜单访问节点
 MenuItem* menuVist;
 int main()
 {

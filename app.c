@@ -16,21 +16,29 @@
 status BIT_flag = 0;
 extern int8_t key_value;
 
+//菜单节点
 Node  Item2, Item3, Item4, menuNode1, menuNode2, menuNode3, menuNode4;
+//头节点
 NodeMini Item, menuNode10, menuNode20, menuNode30;//头节点
-List_node linked;//可选择的主界面上端显示链表
+//可选择的主界面上端显示链表
+List_node linked;
+//主界面上端节点数组
+Node* array[MIN_SHOWTOP_LENGTH];
+//菜单链表
 List_node menuLinked1;//链表（一个MenuItem定义一个链表）
 List_node menuLinked2;
 List_node menuLinked3;
-Node* array[MIN_SHOWTOP_LENGTH];
+
+//菜单项
 MenuItem menuGrade1, menuGrade2, menuGrade3, menuGrade2_1;
 MenuItem* menuArray1[3], * menuArray2[3], * menuArray3[3];
-
+//在实际使用中，直接利用mainTank即可实现应用，不再关心创建的是什么数组
 extern App_tank mainTank;
 
 //数组访问下标
 int8_t array_visit = 0;
 
+//菜单项访问指针
 extern MenuItem* menuVist;
 
 void* actMenuItem(void* paramter);
@@ -270,6 +278,15 @@ MenuItem* appRIGHT(void* paramter)
 	}
 	return paramter;
 }
+/// <summary>
+/// 进入下级菜单或当前菜单节点的动作
+/// </summary>
+/// <param name="paramter">
+/// 当前菜单项
+/// </param>
+/// <returns>
+/// 当前菜单项或下一级菜单
+/// </returns>
 MenuItem* appENTER(void* paramter)
 {
 	//不是数组菜单
@@ -298,6 +315,15 @@ MenuItem* appENTER(void* paramter)
 	((Node*)((MenuItem*)paramter)->controlTank[array_visit])->action(((MenuItem*)paramter)->controlTank[array_visit]);
 	return ((MenuItem*)paramter);
 }
+/// <summary>
+/// 返回上级菜单或返回主界面
+/// </summary>
+/// <param name="paramter">
+/// 当前菜单项
+/// </param>
+/// <returns>
+/// 上级菜单项或设置返回主界面标志
+/// </returns>
 MenuItem* appQUIT(void* paramter)
 {
 	//上一级菜单存在
@@ -325,6 +351,15 @@ MenuItem* appQUIT(void* paramter)
 	}
 	return ((MenuItem*)paramter);
 }
+/// <summary>
+/// 依据按键执行相关的动作
+/// </summary>
+/// <param name="paramter">
+/// 当前菜单项
+/// </param>
+/// <returns>
+/// 当前菜单项或下一级菜单、下一级菜单
+/// </returns>
 MenuItem* application(void* paramter)
 {
 	switch (key_value)
@@ -348,14 +383,17 @@ MenuItem* application(void* paramter)
 	return (MenuItem*)paramter;
 }
 
-//对主界面的上端初始化到mainTank.basicTank中
-//严格按照以下流程初始化
-//注册到控件池->属性动作绑定->初始化选择器链表
+
+/// <summary>
+/// 对主界面的上端初始化到mainTank.basicTank中,
+/// 严格按照以下流程初始化,
+/// 注册到控件池->属性动作绑定->初始化选择器链表
+/// </summary>
 void mainBasicInit()
 {
 	//注册上端控件并添加到控件池
-	mainTank.basicTank = widgetInitialTank(array, 3, &Item2, &Item3, &Item4);
-	mainTank.basicLen = 3;
+	mainTank.basicTank = widgetInitialTank(array, MIN_SHOWTOP_LENGTH, &Item2, &Item3, &Item4);
+	mainTank.basicLen = MIN_SHOWTOP_LENGTH;
 
 	//属性和动作绑定
 	setDLListControlAttribute(&Item2, 1, 0, true, true);
@@ -370,9 +408,7 @@ void mainBasicInit()
 	//控件选择器初始化
 	linkedListInit(&linked, &Item);
 	//向选择器中添加指定内容
-	linkedAddList(&linked, array[0]);
-	//linkedAddList(&linked, &Item3);
-	//linkedAddList(&linked, &Item4);
+	linkedAddList(&linked, &Item2);
 
 
 	linkedGui(linked);
@@ -421,7 +457,6 @@ void menuUserInitialization(int8_t userPass)
 		linkedAddList(&menuLinked2, &menuNode3);
 		linkedAddList(&menuLinked3, &menuNode4);
 		//链表下的菜单节点载入
-		//linkedNumAddList(&menuLinked1, 2, &menuNode1, &menuNode2);
 		linkedNumAddList(&menuLinked1, 2, &menuNode1, &menuNode2);
 		menuLinkedListArrayInitial(&menuGrade2_1, array, 3, actMenuItem);
 	
@@ -433,7 +468,7 @@ void menuUserInitialization(int8_t userPass)
 		linkedAddList(&menuLinked3, &menuNode4);
 		//链表下的菜单控件节点载入
 		linkedNumAddList(&menuLinked1, 1, &menuNode1);
-		
+		menuLinkedListArrayInitial(&menuGrade2_1, array, 3, actMenuItem);
 	}
 	if (userPass == 'i' || userPass == 'h')
 	{
@@ -445,6 +480,7 @@ void menuUserInitialization(int8_t userPass)
 
 		//上下级菜单的链接
 		menuLinked(&menuGrade1, &menuGrade2, &menuGrade3);
+		//注意：每一个菜单项都需要初始化后才能被链接（没有对菜单项进行初始化的，编译器将不会分配内存空间）
 		menuLinked(&menuGrade2, &menuGrade2_1);
 
 		menuVist = &menuGrade1;

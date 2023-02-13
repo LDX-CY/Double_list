@@ -217,8 +217,15 @@ void act(void* paramter)
 	//printf("\r\n%c%d\r\n", 9>=10?'\0':'0',9);
 }
 
-//菜单初始化
-//必须在链表已经载入完成的情况下才能初始化菜单节点
+/// <summary>
+/// 菜单初始化
+/// 必须在链表已经载入完成的情况下才能初始化菜单节点
+/// </summary>
+/// <param name="menuItem">菜单项</param>
+/// <param name="menuLinked">菜单链表</param>
+/// <param name="menu_grade">菜单等级</param>
+/// <param name="menuPointAction">菜单项的动作</param>
+/// <param name="menuArray">下级菜单数组</param>
 void menuLinkedListInitial(MenuItem* menuItem, 
 						   List_node* menuLinked, 
 						   int8_t menu_grade, 

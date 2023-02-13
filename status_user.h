@@ -20,6 +20,5 @@
 
 #define MENUUSERININT_ERROR				116     //menu user init error
 
-
 #endif // !STATUS_USER_H
 

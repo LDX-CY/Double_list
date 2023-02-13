@@ -7,10 +7,10 @@
 
 //配置运行环境
 #define win64 1
-
+//字符串处理文件
 #define STR_USER_CONFIG 1
-
-#define MIN_SHOWTOP_LENGTH 3 //上端显示项目的总数目，严格与总数目相同
+//上端显示项目的总数目，严格与总数目相同
+#define MIN_SHOWTOP_LENGTH 3 
 
 /******按键（红外）配置******/
 #define UP      'w'	//返回上一级
