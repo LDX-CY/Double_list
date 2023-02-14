@@ -13,7 +13,7 @@
 //BIT6:
 //BIT7:
 //按键的软件动作都是根据该状态判断
-status BIT_flag = 0;
+status BIT_flag = 2;
 extern int8_t key_value;
 
 //菜单节点

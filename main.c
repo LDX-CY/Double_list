@@ -42,7 +42,7 @@ int main()
 	menuInitCreat();
 	//相当于初始化
 	menuVist = &menuGrade1;
-	SET_STATUS(BIT_flag, BIT1);
+	//SET_STATUS(BIT_flag, BIT1);
 	while (true)
 	{
 		key_value = 0; 
