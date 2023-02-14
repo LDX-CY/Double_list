@@ -5,6 +5,7 @@
 #include "include_user.h"
 #include "Double_list.h"
 
+//控件池，存放主界面菜单部分的显示内容
 typedef struct
 {
 	Node** basicTank;
@@ -27,14 +28,22 @@ void gui(void* paramter);
 void act(void* paramter);
 
 //控件的操作和控件池的操作
-int8_t setDLListControlAttribute(Node* Item, int16_t id, int8_t unit_flag, bool gui_option, bool gui_option_status);
-int8_t setDLListControlEvent( Node* Item, void (*action)(void* paramter), void (*gui)(void* paramter));
-void printBasicControlGui();
-void printDataControlGui();
-void printControlGui();
-void clearBasicControlTank();
-void clearDataControlTank();
 
+//设置控件的属性
+int8_t setDLListControlAttribute(Node* Item, int16_t id, int8_t unit_flag, bool gui_option, bool gui_option_status);
+//节点的动作金和节点的GUI
+int8_t setDLListControlEvent( Node* Item, void (*action)(void* paramter), void (*gui)(void* paramter));
+//输出主界面上端GUI
+void printBasicControlGui();
+//输出主界面下端GUI
+void printDataControlGui();
+//输出上面两个
+void printControlGui();
+//清除主界面的上端控件池
+void clearBasicControlTank();
+//清除主界面的下端控件池
+void clearDataControlTank();
+//主界面的
 void linkedUserGui(List_node* linked);
 
 //菜单设置

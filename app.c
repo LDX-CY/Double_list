@@ -377,7 +377,7 @@ MenuItem* application(void* paramter)
 		(MenuItem*)paramter = appQUIT(paramter);
 		break;
 	default:
-		paramter = NULL;
+		//paramter = NULL;
 		break;
 	}
 	return (MenuItem*)paramter;
@@ -530,7 +530,7 @@ void menuScheduler(MenuItem MenuGrade)
 		flag = 1;
 		menuVist = menuVist->menuPointAction(menuVist);
 	}
-	else if (GET_STATUS(BIT_flag, BIT1))
+	if (GET_STATUS(BIT_flag, BIT1) && !GET_STATUS(BIT_flag, BIT4))
 	{
 		if (flag)
 		{

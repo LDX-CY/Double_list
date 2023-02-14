@@ -32,8 +32,19 @@ extern MenuItem* menuArray1[3], * menuArray2[3], * menuArray3[3];
 extern int8_t key_value;
 //菜单访问节点
 MenuItem* menuVist;
+
+//特殊运算符(用于确定i的取值范围也是初始化的一种办法)
+struct test
+{
+	//特殊的只有在结构体中才具有这个运算符 : 
+	//表示将i%（2^n）；运输的结构就只能是0到n-1
+	//例如i'=88，n=3，则i=0；
+	uint16_t i : 3;
+};
 int main()
 {
+	
+	
 	//初始化主界面上端显示(初始化了mainTank)
 	mainBasicInit();
 	//输出上端GUI

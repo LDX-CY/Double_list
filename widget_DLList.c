@@ -92,10 +92,16 @@ void linkedUserGui(List_node* linked)
 		if (linked->visit == linked->head) linked->visit = linked->visit->prev;
 		break;
 	default:
-
-		return;
+		break;
 	}
-	linked->visit->gui(linked->visit);
+	if (linked->head != linked->tail)
+	{
+		if (linked->visit->id == 0)
+			linked->visit = linked->visit->next;
+		linked->visit->gui(linked->visit);
+	}
+	
+		
 }
 
 

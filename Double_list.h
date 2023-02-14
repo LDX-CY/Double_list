@@ -49,9 +49,11 @@ struct MenuPoint
 	struct MenuPoint** next_MenuArray;//下一级菜单数组
 	void* (*menuPointAction)(void* paramter);//动作
 };
-
+//链表初始化。将链表的头节点加入链表，器目的是不让链表为空
 int8_t linkedListInit(List_node* linked, NodeMini* Item);
+//向链表中添加一个节点
 int8_t linkedAddList(List_node* linked, Node* Item);
+//链表中删除一个节点id等于下面传入的id的节点
 int8_t linkedDeleteList(List_node* linked, int16_t id);
 //可变参将控件传入链表
 void linkedNumAddList(List_node* linked, int16_t num, ...);
