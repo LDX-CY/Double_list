@@ -9,6 +9,7 @@
 #include "str_user.h"
 #include "keyboard.h"
 #include "app.h"
+#include "memory.h"
 
 //状态寄存器
 extern status BIT_flag;
@@ -41,10 +42,59 @@ struct test
 	//例如i'=88，n=3，则i=0；
 	uint16_t i : 3;
 };
+
+//stru tes;
+
+extern _mem_ _mem_t;
+char ttt[20];
 int main()
 {
+	stru* tes,*tes1,*tes2;
+	ttt[10] = 0;
+	ttt[11] = 1;
+	ttt[12] = 2;
+	ttt[13] = 3;
+	ttt[14] = 4;
+	ttt[15] = 5;
+	ttt[16] = 6;
+	ttt[17] = 7;
+	ttt[18] = 8;
+	ttt[19] = 9;
 	
-	
+	//mem_info(ttt,20);
+	init_mem();
+	tes = (stru*)malloc_ldx(sizeof(stru));
+	tes1 = (stru*)malloc_ldx(sizeof(stru));
+	tes2 = (stru*)malloc_ldx(sizeof(stru));
+
+	tes->end = 'a';
+	tes->first = 'x';
+	tes->midd = 1000;
+
+	tes1->end = 0x11;
+	tes1->first = 0x11;
+	tes1->midd = 0x1111;
+
+	tes2->end = 0x22;
+	tes2->first = 0x22;
+	tes2->midd = 0x2222;
+
+	printf("_mem_t.head = %x\r\n",_mem_t.head);
+	mem_info(Memory,mem_size);
+	printf("tes2 = %p\r\n", tes2);
+	free_ldx(&tes1);
+	mem_info(Memory, mem_size);
+	printf("tes2 = %p\r\n",tes2);
+	printf("sizeof(mem_t):%d\r\n",sizeof(mem_t));
+	printf("_mem_t.tail:%p\r\n", _mem_t.tail);
+	printf("tes.first:%c\r\n", tes->first);	
+	printf("tes.midd:%d\r\n", tes->midd);
+	printf("tes.end:%c\r\n", tes->end);
+
+
+
+
+
 	//初始化主界面上端显示(初始化了mainTank)
 	mainBasicInit();
 	//输出上端GUI
