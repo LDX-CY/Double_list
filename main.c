@@ -46,10 +46,19 @@ struct test
 //stru tes;
 
 extern _mem_ _mem_t;
-char ttt[20];
+char* ttt;
 int main()
 {
 	stru* tes,*tes1,*tes2;
+	init_mem();
+	tes = (stru*)malloc_ldx(sizeof(stru));
+	ttt = (char*)malloc_ldx(sizeof(char) * 20);
+	tes1 = (stru*)malloc_ldx(sizeof(stru));
+	
+	tes2 = (stru*)malloc_ldx(sizeof(stru));
+	mem_info(Memory, mem_size);
+	
+	ttt[0] = 1;
 	ttt[10] = 0;
 	ttt[11] = 1;
 	ttt[12] = 2;
@@ -61,28 +70,29 @@ int main()
 	ttt[18] = 8;
 	ttt[19] = 9;
 	
-	//mem_info(ttt,20);
-	init_mem();
-	tes = (stru*)malloc_ldx(sizeof(stru));
-	tes1 = (stru*)malloc_ldx(sizeof(stru));
-	tes2 = (stru*)malloc_ldx(sizeof(stru));
+	mem_info(Memory, mem_size);
+	
+	
 
 	tes->end = 'a';
 	tes->first = 'x';
 	tes->midd = 1000;
+	mem_info(Memory, mem_size);
 
 	tes1->end = 0x11;
 	tes1->first = 0x11;
 	tes1->midd = 0x1111;
+	mem_info(Memory, mem_size);
 
 	tes2->end = 0x22;
 	tes2->first = 0x22;
 	tes2->midd = 0x2222;
+	mem_info(Memory, mem_size);
 
 	printf("_mem_t.head = %x\r\n",_mem_t.head);
 	mem_info(Memory,mem_size);
 	printf("tes2 = %p\r\n", tes2);
-	free_ldx(&tes1);
+	free_ldx(&ttt);
 	mem_info(Memory, mem_size);
 	printf("tes2 = %p\r\n",tes2);
 	printf("sizeof(mem_t):%d\r\n",sizeof(mem_t));

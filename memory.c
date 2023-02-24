@@ -89,7 +89,7 @@ void* malloc_ldx(uint16_t size_t)
 
 void free_ldx(void** pointer)
 {
-	mem_t* mem_t_, *mem_t_next;
+	mem_t* mem_t_, *mem_t_next,*mem_t_prev;
 	uint16_t i;
 	uint8_t* data;
 	if (!_mem_t.head)
@@ -122,18 +122,34 @@ void free_ldx(void** pointer)
 	}
 	else
 	{
-		mem_t_next = mem_t_;
-		for (; mem_t_ <= _mem_t.tail; mem_t_++)
+		//将下一个节点的内存管理指针指向要删除的节点
+		mem_t_next = mem_t_prev = mem_t_;
+		for (; mem_t_next < _mem_t.tail; ++mem_t_prev)
 		{
+			//指向下一个节点
 			mem_t_next++;
 			data = (uint8_t*)mem_t_next->pointer;
 			data += mem_t_next->size_16-1;
-			for (i = 0; i < mem_t_->size_16; i++)
+			for (i = 0; i < mem_t_next->size_16; i++)
 			{
-				*(data + mem_t_->size_16) = data;
+				*(data + mem_t_->size_16) = *data;
 				data--;
 			}
+			(uint8_t*)mem_t_next->pointer += mem_t_->size_16;
 		}
+		for (mem_t_next = mem_t_prev = mem_t_; mem_t_next < _mem_t.tail; ++mem_t_prev)
+		{
+			mem_t_next++;
+			mem_t_prev->pointer = mem_t_next->pointer;
+			mem_t_prev->size_16 = mem_t_next->size_16;
+			mem_t_prev->type = mem_t_next->type;
+		}
+		mem_t_next->pointer = NULL;
+		mem_t_next->size_16 = NULL;
+		mem_t_next->type = NULL;
+		_mem_t.tail = --mem_t_next;
+
+		*pointer = NULL;
 	}
 }
 
