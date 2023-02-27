@@ -99,7 +99,7 @@ int main()
 	printf("_mem_t.head = %x\r\n",_mem_t.head);
 	mem_info(Memory,mem_size);
 	printf("tes2 = %p\r\n", tes2);
-	free_ldx(&ttt);
+	free_ldx(&tes);
 	mem_info(Memory, mem_size);
 	printf("tes2 = %p\r\n",tes2);
 	printf("sizeof(mem_t):%d\r\n",sizeof(mem_t));

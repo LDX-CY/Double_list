@@ -1,4 +1,5 @@
 #include "memory.h"
+#include "str_user.h"
 
 //uint8_t Memory[mem_size];
 _mem_ _mem_t;
@@ -9,28 +10,32 @@ _mem_ _mem_t;
 /// <param name="array">ÄÚ´æ³Ø</param>
 void mem_info(char* array,uint16_t size)
 {
-	int a, b;
-	printf("Array addr:%#x\r\n", array);
+	int a, b,d;
+	print(UART_Send,"Array addr:%#x\r\n", array);
 	for (a = 0; a < size; a++)
 	{
 		if ((a + 1) % 8)
-			printf("%#x\t", ((char)(&array[a])) & 0xff);
+		{
+			d = (((char)(&array[a])) & 0xff);
+			print(UART_Send, "%#x\t", d);
+		}
 		else
 		{
-			printf("%#x\t", ((char)(&array[a])) & 0xff);
-			printf("\r\n");
+			d = (((char)(&array[a])) & 0xff);
+			print(UART_Send,"%#x\t", d);
+			print(UART_Send,"\r\n");
 			for (b = a - 7; b < a+1; b++)
-				printf("%x\t", array[b] & 0xff);
-			printf("\r\n----------------------------------------------------------------\r\n");
+				print(UART_Send,"%x\t", array[b] & 0xff);
+			print(UART_Send,"\r\n----------------------------------------------------------------\r\n");
 		}
 
 	}
 	if (size % 8 && (a == size))
 	{
-		printf("\r\n");
+		print(UART_Send,"\r\n");
 		for (a = a - size % 8; a < size; a++)
-			printf("%x\t", array[a] & 0xff);
-		printf("\r\n----------------------------------------------------------------\r\n");
+			print(UART_Send,"%x\t", array[a] & 0xff);
+		print(UART_Send,"\r\n----------------------------------------------------------------\r\n");
 	}
 }
 
