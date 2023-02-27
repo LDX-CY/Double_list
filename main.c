@@ -51,10 +51,15 @@ int main()
 {
 	stru* tes,*tes1,*tes2;
 	init_mem();
+	printf("_mem_t.tail:%p\r\n", _mem_t.tail);
+	printf("_mem_t.size_16:%d\r\n", _mem_t.size_16);
+	printf("_mem_t.size_end:%d\r\n", _mem_t.size_end);
+
 	tes = (stru*)malloc_ldx(sizeof(stru));
 	ttt = (char*)malloc_ldx(sizeof(char) * 20);
 	tes1 = (stru*)malloc_ldx(sizeof(stru));
 	
+
 	tes2 = (stru*)malloc_ldx(sizeof(stru));
 	mem_info(Memory, mem_size);
 	
@@ -88,7 +93,9 @@ int main()
 	tes2->first = 0x22;
 	tes2->midd = 0x2222;
 	mem_info(Memory, mem_size);
-
+	printf("_mem_t.tail:%p\r\n", _mem_t.tail);
+	printf("_mem_t.size_16:%d\r\n", _mem_t.size_16);
+	printf("_mem_t.size_end:%d\r\n", _mem_t.size_end);
 	printf("_mem_t.head = %x\r\n",_mem_t.head);
 	mem_info(Memory,mem_size);
 	printf("tes2 = %p\r\n", tes2);
@@ -97,6 +104,8 @@ int main()
 	printf("tes2 = %p\r\n",tes2);
 	printf("sizeof(mem_t):%d\r\n",sizeof(mem_t));
 	printf("_mem_t.tail:%p\r\n", _mem_t.tail);
+	printf("_mem_t.size_16:%d\r\n", _mem_t.size_16);
+	printf("_mem_t.size_end:%d\r\n", _mem_t.size_end);
 	printf("tes.first:%c\r\n", tes->first);	
 	printf("tes.midd:%d\r\n", tes->midd);
 	printf("tes.end:%c\r\n", tes->end);

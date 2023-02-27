@@ -70,7 +70,7 @@ void* malloc_ldx(uint16_t size_t)
 		mem_t_->pointer = &Memory[num];
 		mem_t_->size_16 = size_t;
 		_mem_t.tail = mem_t_;
-		_mem_t.size_16 -= size_t;
+		_mem_t.size_16 -= size_t+sizeof(mem_t);
 		_mem_t.size_end += size_t;
 	}
 	else
@@ -80,7 +80,7 @@ void* malloc_ldx(uint16_t size_t)
 		mem_t_->pointer = &Memory[num];
 		mem_t_->size_16 = size_t;
 		_mem_t.tail = mem_t_;
-		_mem_t.size_16 -= size_t;
+		_mem_t.size_16 -= size_t + sizeof(mem_t);
 		_mem_t.size_end += size_t;
 	}
 
@@ -104,15 +104,18 @@ void free_ldx(void** pointer)
 		return;
 	for (mem_t_ = _mem_t.head; mem_t_ <= _mem_t.tail; mem_t_++)
 	{
+		//查找删除内存
 		if (mem_t_->pointer == *pointer)
 			break;
 	}
 	if (mem_t_ > _mem_t.tail)
 		return;
+	//调整内存大小
+	_mem_t.size_16 += mem_t_->size_16 + sizeof(mem_t);
+	_mem_t.size_end -= mem_t_->size_16;
+	//尾部删除修改（空间换时间）
 	if (mem_t_ == _mem_t.tail)
 	{
-		_mem_t.size_16 += mem_t_->size_16 + sizeof(mem_t);
-		_mem_t.size_end -= mem_t_->size_16;
 		if(_mem_t.tail == _mem_t.head)
 			_mem_t.tail = NULL;
 		else
@@ -120,11 +123,11 @@ void free_ldx(void** pointer)
 		*pointer = NULL;
 		return;
 	}
-	else
+	else	//其他位置删除（时间换空间）
 	{
 		//将下一个节点的内存管理指针指向要删除的节点
-		mem_t_next = mem_t_prev = mem_t_;
-		for (; mem_t_next < _mem_t.tail; ++mem_t_prev)
+		mem_t_next = mem_t_;
+		for (; mem_t_next < _mem_t.tail; )
 		{
 			//指向下一个节点
 			mem_t_next++;
@@ -132,21 +135,27 @@ void free_ldx(void** pointer)
 			data += mem_t_next->size_16-1;
 			for (i = 0; i < mem_t_next->size_16; i++)
 			{
+				//数据迁移
 				*(data + mem_t_->size_16) = *data;
 				data--;
 			}
+			//修改控制块指向
 			(uint8_t*)mem_t_next->pointer += mem_t_->size_16;
 		}
 		for (mem_t_next = mem_t_prev = mem_t_; mem_t_next < _mem_t.tail; ++mem_t_prev)
 		{
+			//控制块迁移
 			mem_t_next++;
 			mem_t_prev->pointer = mem_t_next->pointer;
 			mem_t_prev->size_16 = mem_t_next->size_16;
 			mem_t_prev->type = mem_t_next->type;
 		}
+		//清除最后数据增加内容（这一段代码用于调试）
 		mem_t_next->pointer = NULL;
 		mem_t_next->size_16 = NULL;
 		mem_t_next->type = NULL;
+
+
 		_mem_t.tail = --mem_t_next;
 
 		*pointer = NULL;
